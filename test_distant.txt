@@ -1,0 +1,138 @@
+
+==================================================
+PB BZH Release Check
+==================================================
+Site principal    : https://www.pb-bzh-concept.fr
+Catalogue logiciel: https://www.pb-bzh-concept.fr/softwares
+Racine locale     : C:\wamp64\www\pb-bzh-concept.fr\public\softwares
+Tests web         : True
+
+  [OK]   Racine locale softwares
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares
+
+==================================================
+Gestion Planning Personnel Mobile
+==================================================
+  Id       : GestionPlanningPersonnelMobile
+  Type     : apk
+  Version  : 2.0.0
+  Category : msi-software-packager
+
+  [FAIL] Dossier web local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionPlanningPersonnelMobile
+  [FAIL] Artefact local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionPlanningPersonnelMobile\GestionPlanningPersonnelMobile_2.0.0.apk
+  [FAIL] SHA256
+         Artefact absent, SHA256 impossible à vérifier.
+  [FAIL] update.json
+         update.json absent : C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionPlanningPersonnelMobile\update.json
+
+  Download URL : https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=GestionPlanningPersonnelMobile
+  Artifact URL : https://www.pb-bzh-concept.fr/softwares/msi-software-packager/GestionPlanningPersonnelMobile/GestionPlanningPersonnelMobile_2.0.0.apk
+  [OK]   URL artefact
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/msi-software-packager/GestionPlanningPersonnelMobile/GestionPlanningPersonnelMobile_2.0.0.apk
+  [OK]   URL download.php
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=GestionPlanningPersonnelMobile
+
+==================================================
+PB BZH Mobile Lab
+==================================================
+  Id       : PBBZHMobileLab
+  Type     : apk
+  Version  : 1.2.2
+  Category : msi-software-packager
+
+  [FAIL] Dossier web local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\PBBZHMobileLab
+  [FAIL] Artefact local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\PBBZHMobileLab\PBBZHMobileLab_1.2.2.apk
+  [FAIL] SHA256
+         Artefact absent, SHA256 impossible à vérifier.
+  [FAIL] update.json
+         update.json absent : C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\PBBZHMobileLab\update.json
+
+  Download URL : https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=PBBZHMobileLab
+  Artifact URL : https://www.pb-bzh-concept.fr/softwares/msi-software-packager/PBBZHMobileLab/PBBZHMobileLab_1.2.2.apk
+  [OK]   URL artefact
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/msi-software-packager/PBBZHMobileLab/PBBZHMobileLab_1.2.2.apk
+  [OK]   URL download.php
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=PBBZHMobileLab
+
+==================================================
+MSI Software Packager
+==================================================
+  Id       : MsiSoftwarePackager
+  Type     : msi
+  Version  : 2.0.0
+  Category : msi-software-packager
+
+  [FAIL] Dossier web local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\MsiSoftwarePackager
+  [FAIL] Artefact local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\MsiSoftwarePackager\MsiSoftwarePackager.msi
+  [FAIL] SHA256
+         Artefact absent, SHA256 impossible à vérifier.
+  [WARN] update.json
+         Non demandé pour ce produit.
+
+  Download URL : https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=MsiSoftwarePackager
+  Artifact URL : https://www.pb-bzh-concept.fr/softwares/msi-software-packager/MsiSoftwarePackager/MsiSoftwarePackager.msi
+  [OK]   URL artefact
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/msi-software-packager/MsiSoftwarePackager/MsiSoftwarePackager.msi
+  [OK]   URL download.php
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=MsiSoftwarePackager
+
+==================================================
+Deploy Configurator
+==================================================
+  Id       : DeployConfigurator
+  Type     : msi
+  Version  : 1.0.0
+  Category : msi-software-packager
+
+  [FAIL] Dossier web local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\DeployConfigurator
+  [FAIL] Artefact local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\DeployConfigurator\DeployConfigurator.msi
+  [FAIL] SHA256
+         Artefact absent, SHA256 impossible à vérifier.
+  [WARN] update.json
+         Non demandé pour ce produit.
+
+  Download URL : https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=DeployConfigurator
+  Artifact URL : https://www.pb-bzh-concept.fr/softwares/msi-software-packager/DeployConfigurator/DeployConfigurator.msi
+  [OK]   URL artefact
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/msi-software-packager/DeployConfigurator/DeployConfigurator.msi
+  [OK]   URL download.php
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=DeployConfigurator
+
+==================================================
+Gestion des services GEII
+==================================================
+  Id       : GestionServicesGEII
+  Type     : msi
+  Version  : 1.0.0
+  Category : msi-software-packager
+
+  [OK]   Dossier web local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionServicesGEII
+  [OK]   Artefact local
+         C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionServicesGEII\GestionServicesGEII.msi
+  [FAIL] SHA256
+         Fichier SHA256 absent : C:\wamp64\www\pb-bzh-concept.fr\public\softwares\msi-software-packager\GestionServicesGEII\GestionServicesGEII.msi.sha256.txt
+  [WARN] update.json
+         Non demandé pour ce produit.
+
+  Download URL : https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=GestionServicesGEII
+  Artifact URL : https://www.pb-bzh-concept.fr/softwares/msi-software-packager/GestionServicesGEII/GestionServicesGEII.msi
+  [OK]   URL artefact
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/msi-software-packager/GestionServicesGEII/GestionServicesGEII.msi
+  [OK]   URL download.php
+         HTTP 200 - https://www.pb-bzh-concept.fr/softwares/download.php?category=msi-software-packager&product=GestionServicesGEII
+
+==================================================
+Summary
+==================================================
+OK       : 13
+Warnings : 3
+Errors   : 15

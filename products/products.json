@@ -17,13 +17,13 @@
       "hasUpdateJson": true
     },
     {
-      "id": "PB_BZH_Mobile_Lab",
+      "id": "PBBZHMobileLab",
       "displayName": "PB BZH Mobile Lab",
       "type": "apk",
       "category": "msi-software-packager",
-      "version": "1.2.3",
+      "version": "1.2.2",
       "androidVersionCode": 10203,
-      "artifactFile": "PB_BZH_License_Generator-1.2.3.apk",
+      "artifactFile": "PBBZHMobileLab_1.2.2.apk",
       "hasSha256": true,
       "hasUpdateJson": true
     },
