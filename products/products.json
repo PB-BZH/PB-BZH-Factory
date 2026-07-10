@@ -14,7 +14,8 @@
       "androidVersionCode": 20000,
       "artifactFile": "GestionPlanningPersonnelMobile_2.0.0.apk",
       "hasSha256": true,
-      "hasUpdateJson": true
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
     },
     {
       "id": "PBBZHMobileLab",
@@ -25,37 +26,41 @@
       "androidVersionCode": 10203,
       "artifactFile": "PBBZHMobileLab_1.2.2.apk",
       "hasSha256": true,
-      "hasUpdateJson": true
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
     },
     {
       "id": "MsiSoftwarePackager",
       "displayName": "MSI Software Packager",
       "type": "msi",
       "category": "msi-software-packager",
-      "version": "2.0.0",
+      "version": "3.2.6",
       "artifactFile": "MsiSoftwarePackager.msi",
       "hasSha256": true,
-      "hasUpdateJson": false
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
     },
     {
       "id": "DeployConfigurator",
       "displayName": "Deploy Configurator",
       "type": "msi",
       "category": "msi-software-packager",
-      "version": "1.0.0",
+      "version": "2.2.0",
       "artifactFile": "DeployConfigurator.msi",
       "hasSha256": true,
-      "hasUpdateJson": false
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
     },
     {
       "id": "GestionServicesGEII",
       "displayName": "Gestion des services GEII",
       "type": "msi",
       "category": "msi-software-packager",
-      "version": "1.0.0",
+      "version": "1.5.3",
       "artifactFile": "GestionServicesGEII.msi",
       "hasSha256": true,
-      "hasUpdateJson": false
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
     }
   ]
 }

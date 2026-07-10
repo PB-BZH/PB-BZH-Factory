@@ -1,0 +1,6 @@
+# Generated release reports
+reports/release-check_*.md
+reports/release-check_*.json
+
+# Keep reports folder
+!reports/.gitkeep
