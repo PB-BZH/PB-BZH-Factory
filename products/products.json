@@ -1,0 +1,61 @@
+{
+  "site": {
+    "mainUrl": "https://www.pb-bzh-concept.fr",
+    "softwaresUrl": "https://www.pb-bzh-concept.fr/softwares",
+    "localSoftwaresRoot": "C:\\wamp64\\www\\pb-bzh-concept.fr\\public\\softwares"
+  },
+  "products": [
+    {
+      "id": "GestionPlanningPersonnelMobile",
+      "displayName": "Gestion Planning Personnel Mobile",
+      "type": "apk",
+      "category": "msi-software-packager",
+      "version": "2.0.0",
+      "androidVersionCode": 20000,
+      "artifactFile": "GestionPlanningPersonnelMobile_2.0.0.apk",
+      "hasSha256": true,
+      "hasUpdateJson": true
+    },
+    {
+      "id": "PB_BZH_Mobile_Lab",
+      "displayName": "PB BZH Mobile Lab",
+      "type": "apk",
+      "category": "msi-software-packager",
+      "version": "1.2.3",
+      "androidVersionCode": 10203,
+      "artifactFile": "PB_BZH_License_Generator-1.2.3.apk",
+      "hasSha256": true,
+      "hasUpdateJson": true
+    },
+    {
+      "id": "MsiSoftwarePackager",
+      "displayName": "MSI Software Packager",
+      "type": "msi",
+      "category": "msi-software-packager",
+      "version": "2.0.0",
+      "artifactFile": "MsiSoftwarePackager.msi",
+      "hasSha256": true,
+      "hasUpdateJson": false
+    },
+    {
+      "id": "DeployConfigurator",
+      "displayName": "Deploy Configurator",
+      "type": "msi",
+      "category": "msi-software-packager",
+      "version": "1.0.0",
+      "artifactFile": "DeployConfigurator.msi",
+      "hasSha256": true,
+      "hasUpdateJson": false
+    },
+    {
+      "id": "GestionServicesGEII",
+      "displayName": "Gestion des services GEII",
+      "type": "msi",
+      "category": "msi-software-packager",
+      "version": "1.0.0",
+      "artifactFile": "GestionServicesGEII.msi",
+      "hasSha256": true,
+      "hasUpdateJson": false
+    }
+  ]
+}
