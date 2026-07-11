@@ -196,6 +196,11 @@ public static class ProductGridViewConfigurator {
         e.CellStyle.ForeColor = Color.FromArgb(255,120,120);
         break;
 
+      case "NOT CHECKED":
+        e.CellStyle.BackColor = Color.FromArgb(230,230,230);
+        e.CellStyle.ForeColor = Color.DimGray;
+        break;
+
       default:
         e.CellStyle.BackColor = Color.FromArgb(37,37,38);
         e.CellStyle.ForeColor = Color.Silver;

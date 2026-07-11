@@ -44,6 +44,15 @@ public sealed class ReleaseReportService {
         JsonOptions);
   }
 
+  public bool HasProductChecks(
+    ReleaseCheckReport report,
+    string productId,
+    string displayName) {
+    return report.Checks.Any(row =>
+        string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase));
+  }
+
   public string GetProductStatus(
       ReleaseCheckReport report,
       string productId,

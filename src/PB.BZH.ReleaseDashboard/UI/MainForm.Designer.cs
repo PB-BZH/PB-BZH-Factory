@@ -31,6 +31,11 @@ partial class MainForm {
     btnOpenDownloadUrl = new Button();
     btnOpenArtifactUrl = new Button();
     btnOpenUpdateJsonUrl = new Button();
+    btnViewSha256Url = new Button();
+    btnVerifySha256 = new Button();
+    btnViewProductsJson = new Button();
+    btnEditProductsJson = new Button();
+    btnReloadCatalog = new Button();
     splitProducts = new SplitContainer();
     dgvProducts = new DataGridView();
     grpProductDetails = new GroupBox();
@@ -48,7 +53,6 @@ partial class MainForm {
     lblDetailUpdateJsonUrl = new Label();
     txtDetailUpdateJsonUrl = new RichTextBox();
     txtConsole = new RichTextBox();
-    btnViewSha256Url = new Button();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpSummary.SuspendLayout();
@@ -79,7 +83,7 @@ partial class MainForm {
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute,90F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,55F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,45F));
-    tlpMain.Size = new Size(1180,760);
+    tlpMain.Size = new Size(1581,760);
     tlpMain.TabIndex = 0;
     // 
     // lblTitle
@@ -90,7 +94,7 @@ partial class MainForm {
     lblTitle.Location = new Point(12,12);
     lblTitle.Margin = new Padding(0,0,0,8);
     lblTitle.Name = "lblTitle";
-    lblTitle.Size = new Size(1156,30);
+    lblTitle.Size = new Size(1557,30);
     lblTitle.TabIndex = 0;
     lblTitle.Text = "PB BZH Release Dashboard";
     // 
@@ -103,7 +107,7 @@ partial class MainForm {
     pnlHeader.Location = new Point(12,50);
     pnlHeader.Margin = new Padding(0);
     pnlHeader.Name = "pnlHeader";
-    pnlHeader.Size = new Size(1156,90);
+    pnlHeader.Size = new Size(1557,90);
     pnlHeader.TabIndex = 1;
     // 
     // flpSummary
@@ -190,10 +194,14 @@ partial class MainForm {
     flpToolbar.Controls.Add(btnOpenArtifactUrl);
     flpToolbar.Controls.Add(btnOpenUpdateJsonUrl);
     flpToolbar.Controls.Add(btnViewSha256Url);
-    flpToolbar.Dock = DockStyle.Top;
+    flpToolbar.Controls.Add(btnVerifySha256);
+    flpToolbar.Controls.Add(btnViewProductsJson);
+    flpToolbar.Controls.Add(btnEditProductsJson);
+    flpToolbar.Controls.Add(btnReloadCatalog);
+    flpToolbar.Dock = DockStyle.Fill;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
-    flpToolbar.Size = new Size(1156,42);
+    flpToolbar.Size = new Size(1557,90);
     flpToolbar.TabIndex = 0;
     // 
     // btnRunReleaseCheck
@@ -202,7 +210,7 @@ partial class MainForm {
     btnRunReleaseCheck.Location = new Point(0,0);
     btnRunReleaseCheck.Margin = new Padding(0,0,8,8);
     btnRunReleaseCheck.Name = "btnRunReleaseCheck";
-    btnRunReleaseCheck.Size = new Size(129,34);
+    btnRunReleaseCheck.Size = new Size(111,34);
     btnRunReleaseCheck.TabIndex = 0;
     btnRunReleaseCheck.Text = "Run release check";
     btnRunReleaseCheck.UseVisualStyleBackColor = true;
@@ -211,10 +219,10 @@ partial class MainForm {
     // btnOpenLastReport
     // 
     btnOpenLastReport.AutoSize = true;
-    btnOpenLastReport.Location = new Point(137,0);
+    btnOpenLastReport.Location = new Point(119,0);
     btnOpenLastReport.Margin = new Padding(0,0,8,8);
     btnOpenLastReport.Name = "btnOpenLastReport";
-    btnOpenLastReport.Size = new Size(119,34);
+    btnOpenLastReport.Size = new Size(102,34);
     btnOpenLastReport.TabIndex = 1;
     btnOpenLastReport.Text = "Open last report";
     btnOpenLastReport.UseVisualStyleBackColor = true;
@@ -223,10 +231,10 @@ partial class MainForm {
     // btnOpenReportsFolder
     // 
     btnOpenReportsFolder.AutoSize = true;
-    btnOpenReportsFolder.Location = new Point(264,0);
+    btnOpenReportsFolder.Location = new Point(229,0);
     btnOpenReportsFolder.Margin = new Padding(0,0,8,8);
     btnOpenReportsFolder.Name = "btnOpenReportsFolder";
-    btnOpenReportsFolder.Size = new Size(139,34);
+    btnOpenReportsFolder.Size = new Size(120,34);
     btnOpenReportsFolder.TabIndex = 2;
     btnOpenReportsFolder.Text = "Open reports folder";
     btnOpenReportsFolder.UseVisualStyleBackColor = true;
@@ -235,10 +243,10 @@ partial class MainForm {
     // btnOpenDownloadUrl
     // 
     btnOpenDownloadUrl.AutoSize = true;
-    btnOpenDownloadUrl.Location = new Point(411,0);
+    btnOpenDownloadUrl.Location = new Point(357,0);
     btnOpenDownloadUrl.Margin = new Padding(0,0,8,8);
     btnOpenDownloadUrl.Name = "btnOpenDownloadUrl";
-    btnOpenDownloadUrl.Size = new Size(137,34);
+    btnOpenDownloadUrl.Size = new Size(126,34);
     btnOpenDownloadUrl.TabIndex = 3;
     btnOpenDownloadUrl.Text = "Open download URL";
     btnOpenDownloadUrl.UseVisualStyleBackColor = true;
@@ -247,10 +255,10 @@ partial class MainForm {
     // btnOpenArtifactUrl
     // 
     btnOpenArtifactUrl.AutoSize = true;
-    btnOpenArtifactUrl.Location = new Point(556,0);
+    btnOpenArtifactUrl.Location = new Point(491,0);
     btnOpenArtifactUrl.Margin = new Padding(0,0,8,8);
     btnOpenArtifactUrl.Name = "btnOpenArtifactUrl";
-    btnOpenArtifactUrl.Size = new Size(124,34);
+    btnOpenArtifactUrl.Size = new Size(110,34);
     btnOpenArtifactUrl.TabIndex = 4;
     btnOpenArtifactUrl.Text = "Open artifact URL";
     btnOpenArtifactUrl.UseVisualStyleBackColor = true;
@@ -259,14 +267,74 @@ partial class MainForm {
     // btnOpenUpdateJsonUrl
     // 
     btnOpenUpdateJsonUrl.AutoSize = true;
-    btnOpenUpdateJsonUrl.Location = new Point(688,0);
+    btnOpenUpdateJsonUrl.Location = new Point(609,0);
     btnOpenUpdateJsonUrl.Margin = new Padding(0,0,8,8);
     btnOpenUpdateJsonUrl.Name = "btnOpenUpdateJsonUrl";
-    btnOpenUpdateJsonUrl.Size = new Size(124,34);
+    btnOpenUpdateJsonUrl.Size = new Size(107,34);
     btnOpenUpdateJsonUrl.TabIndex = 5;
     btnOpenUpdateJsonUrl.Text = "View update.json";
     btnOpenUpdateJsonUrl.UseVisualStyleBackColor = true;
     btnOpenUpdateJsonUrl.Click += btnOpenUpdateJsonUrl_Click;
+    // 
+    // btnViewSha256Url
+    // 
+    btnViewSha256Url.AutoSize = true;
+    btnViewSha256Url.Location = new Point(724,0);
+    btnViewSha256Url.Margin = new Padding(0,0,8,8);
+    btnViewSha256Url.Name = "btnViewSha256Url";
+    btnViewSha256Url.Size = new Size(86,34);
+    btnViewSha256Url.TabIndex = 5;
+    btnViewSha256Url.Text = "View SHA256";
+    btnViewSha256Url.UseVisualStyleBackColor = true;
+    btnViewSha256Url.Click += btnViewSha256Url_Click;
+    // 
+    // btnVerifySha256
+    // 
+    btnVerifySha256.AutoSize = true;
+    btnVerifySha256.Location = new Point(818,0);
+    btnVerifySha256.Margin = new Padding(0,0,8,8);
+    btnVerifySha256.Name = "btnVerifySha256";
+    btnVerifySha256.Size = new Size(90,34);
+    btnVerifySha256.TabIndex = 5;
+    btnVerifySha256.Text = "Verify SHA256";
+    btnVerifySha256.UseVisualStyleBackColor = true;
+    btnVerifySha256.Click += btnVerifySha256_Click;
+    // 
+    // btnViewProductsJson
+    // 
+    btnViewProductsJson.AutoSize = true;
+    btnViewProductsJson.Location = new Point(916,0);
+    btnViewProductsJson.Margin = new Padding(0,0,8,8);
+    btnViewProductsJson.Name = "btnViewProductsJson";
+    btnViewProductsJson.Size = new Size(117,34);
+    btnViewProductsJson.TabIndex = 5;
+    btnViewProductsJson.Text = "View products.json";
+    btnViewProductsJson.UseVisualStyleBackColor = true;
+    btnViewProductsJson.Click += btnViewProductsJson_Click;
+    // 
+    // btnEditProductsJson
+    // 
+    btnEditProductsJson.AutoSize = true;
+    btnEditProductsJson.Location = new Point(1041,0);
+    btnEditProductsJson.Margin = new Padding(0,0,8,8);
+    btnEditProductsJson.Name = "btnEditProductsJson";
+    btnEditProductsJson.Size = new Size(112,34);
+    btnEditProductsJson.TabIndex = 5;
+    btnEditProductsJson.Text = "Edit products.json";
+    btnEditProductsJson.UseVisualStyleBackColor = true;
+    btnEditProductsJson.MouseCaptureChanged += btnEditProductsJson_Click;
+    // 
+    // btnReloadCatalog
+    // 
+    btnReloadCatalog.AutoSize = true;
+    btnReloadCatalog.Location = new Point(1161,0);
+    btnReloadCatalog.Margin = new Padding(0,0,8,8);
+    btnReloadCatalog.Name = "btnReloadCatalog";
+    btnReloadCatalog.Size = new Size(95,34);
+    btnReloadCatalog.TabIndex = 5;
+    btnReloadCatalog.Text = "Reload catalog";
+    btnReloadCatalog.UseVisualStyleBackColor = true;
+    btnReloadCatalog.Click += btnReloadCatalog_Click;
     // 
     // splitProducts
     // 
@@ -282,8 +350,8 @@ partial class MainForm {
     // splitProducts.Panel2
     // 
     splitProducts.Panel2.Controls.Add(grpProductDetails);
-    splitProducts.Size = new Size(1156,326);
-    splitProducts.SplitterDistance = 780;
+    splitProducts.Size = new Size(1557,326);
+    splitProducts.SplitterDistance = 1045;
     splitProducts.TabIndex = 2;
     // 
     // dgvProducts
@@ -300,7 +368,7 @@ partial class MainForm {
     dgvProducts.ReadOnly = true;
     dgvProducts.RowHeadersVisible = false;
     dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-    dgvProducts.Size = new Size(780,326);
+    dgvProducts.Size = new Size(1045,326);
     dgvProducts.TabIndex = 0;
     dgvProducts.SelectionChanged += dgvProducts_SelectionChanged;
     // 
@@ -311,7 +379,7 @@ partial class MainForm {
     grpProductDetails.Location = new Point(0,0);
     grpProductDetails.Name = "grpProductDetails";
     grpProductDetails.Padding = new Padding(8);
-    grpProductDetails.Size = new Size(372,326);
+    grpProductDetails.Size = new Size(508,326);
     grpProductDetails.TabIndex = 0;
     grpProductDetails.TabStop = false;
     grpProductDetails.Text = "Product details";
@@ -348,7 +416,7 @@ partial class MainForm {
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
     tlpProductDetails.RowStyles.Add(new RowStyle());
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
-    tlpProductDetails.Size = new Size(356,294);
+    tlpProductDetails.Size = new Size(492,294);
     tlpProductDetails.TabIndex = 0;
     // 
     // lblDetailProduct
@@ -358,7 +426,7 @@ partial class MainForm {
     lblDetailProduct.Font = new Font("Segoe UI",9F,FontStyle.Bold);
     lblDetailProduct.Location = new Point(3,0);
     lblDetailProduct.Name = "lblDetailProduct";
-    lblDetailProduct.Size = new Size(350,15);
+    lblDetailProduct.Size = new Size(486,15);
     lblDetailProduct.TabIndex = 0;
     lblDetailProduct.Text = "Product : -";
     // 
@@ -368,7 +436,7 @@ partial class MainForm {
     lblDetailType.Dock = DockStyle.Fill;
     lblDetailType.Location = new Point(3,15);
     lblDetailType.Name = "lblDetailType";
-    lblDetailType.Size = new Size(350,15);
+    lblDetailType.Size = new Size(486,15);
     lblDetailType.TabIndex = 1;
     lblDetailType.Text = "Type : -";
     // 
@@ -378,7 +446,7 @@ partial class MainForm {
     lblDetailVersion.Dock = DockStyle.Fill;
     lblDetailVersion.Location = new Point(3,30);
     lblDetailVersion.Name = "lblDetailVersion";
-    lblDetailVersion.Size = new Size(350,15);
+    lblDetailVersion.Size = new Size(486,15);
     lblDetailVersion.TabIndex = 2;
     lblDetailVersion.Text = "Version : -";
     // 
@@ -389,7 +457,7 @@ partial class MainForm {
     lblDetailStatus.Location = new Point(3,45);
     lblDetailStatus.Margin = new Padding(3,0,3,8);
     lblDetailStatus.Name = "lblDetailStatus";
-    lblDetailStatus.Size = new Size(350,15);
+    lblDetailStatus.Size = new Size(486,15);
     lblDetailStatus.TabIndex = 3;
     lblDetailStatus.Text = "Status : -";
     // 
@@ -399,7 +467,7 @@ partial class MainForm {
     lblDetailDownloadUrl.Dock = DockStyle.Fill;
     lblDetailDownloadUrl.Location = new Point(3,68);
     lblDetailDownloadUrl.Name = "lblDetailDownloadUrl";
-    lblDetailDownloadUrl.Size = new Size(350,15);
+    lblDetailDownloadUrl.Size = new Size(486,15);
     lblDetailDownloadUrl.TabIndex = 4;
     lblDetailDownloadUrl.Text = "Download URL";
     // 
@@ -412,7 +480,7 @@ partial class MainForm {
     txtDetailDownloadUrl.Name = "txtDetailDownloadUrl";
     txtDetailDownloadUrl.ReadOnly = true;
     txtDetailDownloadUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailDownloadUrl.Size = new Size(350,36);
+    txtDetailDownloadUrl.Size = new Size(486,36);
     txtDetailDownloadUrl.TabIndex = 5;
     txtDetailDownloadUrl.Text = "";
     txtDetailDownloadUrl.WordWrap = false;
@@ -424,7 +492,7 @@ partial class MainForm {
     lblDetailArtifactUrl.Dock = DockStyle.Fill;
     lblDetailArtifactUrl.Location = new Point(3,125);
     lblDetailArtifactUrl.Name = "lblDetailArtifactUrl";
-    lblDetailArtifactUrl.Size = new Size(350,15);
+    lblDetailArtifactUrl.Size = new Size(486,15);
     lblDetailArtifactUrl.TabIndex = 6;
     lblDetailArtifactUrl.Text = "Artifact URL";
     // 
@@ -437,7 +505,7 @@ partial class MainForm {
     txtDetailArtifactUrl.Name = "txtDetailArtifactUrl";
     txtDetailArtifactUrl.ReadOnly = true;
     txtDetailArtifactUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailArtifactUrl.Size = new Size(350,36);
+    txtDetailArtifactUrl.Size = new Size(486,36);
     txtDetailArtifactUrl.TabIndex = 7;
     txtDetailArtifactUrl.Text = "";
     txtDetailArtifactUrl.WordWrap = false;
@@ -449,7 +517,7 @@ partial class MainForm {
     lblDetailSha256Url.Dock = DockStyle.Fill;
     lblDetailSha256Url.Location = new Point(3,182);
     lblDetailSha256Url.Name = "lblDetailSha256Url";
-    lblDetailSha256Url.Size = new Size(350,15);
+    lblDetailSha256Url.Size = new Size(486,15);
     lblDetailSha256Url.TabIndex = 8;
     lblDetailSha256Url.Text = "SHA256 URL";
     // 
@@ -462,7 +530,7 @@ partial class MainForm {
     txtDetailSha256Url.Name = "txtDetailSha256Url";
     txtDetailSha256Url.ReadOnly = true;
     txtDetailSha256Url.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailSha256Url.Size = new Size(350,36);
+    txtDetailSha256Url.Size = new Size(486,36);
     txtDetailSha256Url.TabIndex = 9;
     txtDetailSha256Url.Text = "";
     txtDetailSha256Url.WordWrap = false;
@@ -474,7 +542,7 @@ partial class MainForm {
     lblDetailUpdateJsonUrl.Dock = DockStyle.Fill;
     lblDetailUpdateJsonUrl.Location = new Point(3,239);
     lblDetailUpdateJsonUrl.Name = "lblDetailUpdateJsonUrl";
-    lblDetailUpdateJsonUrl.Size = new Size(350,15);
+    lblDetailUpdateJsonUrl.Size = new Size(486,15);
     lblDetailUpdateJsonUrl.TabIndex = 10;
     lblDetailUpdateJsonUrl.Text = "Update JSON URL";
     // 
@@ -487,7 +555,7 @@ partial class MainForm {
     txtDetailUpdateJsonUrl.Name = "txtDetailUpdateJsonUrl";
     txtDetailUpdateJsonUrl.ReadOnly = true;
     txtDetailUpdateJsonUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailUpdateJsonUrl.Size = new Size(350,36);
+    txtDetailUpdateJsonUrl.Size = new Size(486,36);
     txtDetailUpdateJsonUrl.TabIndex = 11;
     txtDetailUpdateJsonUrl.Text = "";
     txtDetailUpdateJsonUrl.WordWrap = false;
@@ -503,29 +571,17 @@ partial class MainForm {
     txtConsole.Margin = new Padding(0);
     txtConsole.Name = "txtConsole";
     txtConsole.ReadOnly = true;
-    txtConsole.Size = new Size(1156,274);
+    txtConsole.Size = new Size(1557,274);
     txtConsole.TabIndex = 3;
     txtConsole.Text = "";
     txtConsole.WordWrap = false;
     txtConsole.LinkClicked += txtConsole_LinkClicked;
     // 
-    // btnViewSha256Url
-    // 
-    btnViewSha256Url.AutoSize = true;
-    btnViewSha256Url.Location = new Point(820,0);
-    btnViewSha256Url.Margin = new Padding(0,0,8,8);
-    btnViewSha256Url.Name = "btnViewSha256Url";
-    btnViewSha256Url.Size = new Size(124,34);
-    btnViewSha256Url.TabIndex = 5;
-    btnViewSha256Url.Text = "View SHA256";
-    btnViewSha256Url.UseVisualStyleBackColor = true;
-    btnViewSha256Url.Click += btnViewSha256Url_Click;
-    // 
     // MainForm
     // 
     AutoScaleDimensions = new SizeF(7F,15F);
     AutoScaleMode = AutoScaleMode.Font;
-    ClientSize = new Size(1180,760);
+    ClientSize = new Size(1581,760);
     Controls.Add(tlpMain);
     MinimumSize = new Size(950,600);
     Name = "MainForm";
@@ -587,4 +643,8 @@ partial class MainForm {
   private RichTextBox txtDetailUpdateJsonUrl;
   private RichTextBox txtConsole;
   private Button btnViewSha256Url;
+  private Button btnVerifySha256;
+  private Button btnViewProductsJson;
+  private Button btnEditProductsJson;
+  private Button btnReloadCatalog;
 }

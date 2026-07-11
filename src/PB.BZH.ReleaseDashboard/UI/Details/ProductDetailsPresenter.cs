@@ -55,6 +55,7 @@ public static class ProductDetailsPresenter {
           "OK" => Color.LimeGreen,
           "WARN" => Color.Orange,
           "FAIL" => Color.OrangeRed,
+          "NOT CHECKED" => Color.LightGray,
           _ => Color.Silver
         };
   }

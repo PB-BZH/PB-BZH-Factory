@@ -15,6 +15,7 @@ namespace PB.BZH.ReleaseDashboard.UI;
 public partial class MainForm: Form {
   private readonly ProductCatalogService _catalogService = new();
   private readonly ReleaseReportService _reportService = new();
+  private readonly RemoteSha256Verifier _sha256Verifier = new();
 
   private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
@@ -273,6 +274,18 @@ public partial class MainForm: Form {
       }
 
       foreach (ProductGridRow row in _rows) {
+        bool hasChecks =
+            _reportService.HasProductChecks(
+                report,
+                row.Id,
+                row.DisplayName);
+
+        if (!hasChecks) {
+          row.Status = "NOT CHECKED";
+          row.LastCheck = string.Empty;
+          continue;
+        }
+
         row.Status =
             _reportService.GetProductStatus(
                 report,
@@ -315,6 +328,10 @@ public partial class MainForm: Form {
     btnOpenArtifactUrl.Enabled = enabled;
     btnOpenUpdateJsonUrl.Enabled = enabled;
     btnViewSha256Url.Enabled = enabled;
+    btnVerifySha256.Enabled = enabled;
+    btnViewProductsJson.Enabled = enabled;
+    btnEditProductsJson.Enabled = enabled;
+    btnReloadCatalog.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -412,6 +429,128 @@ public partial class MainForm: Form {
     }
   }
 
+  private string GetProductsJsonPath() {
+    if (string.IsNullOrWhiteSpace(_factoryRoot)) {
+      throw new InvalidOperationException("Factory root is not defined.");
+    }
+
+    return Path.Combine(
+        _factoryRoot,
+        "products",
+        "products.json");
+  }
+
+  private void btnViewProductsJson_Click(object sender,EventArgs e) {
+    try {
+      string productsFile =
+          GetProductsJsonPath();
+
+      if (!File.Exists(productsFile)) {
+        AppendConsole("[ERROR] products.json not found : " + productsFile);
+        return;
+      }
+
+      string json =
+          File.ReadAllText(productsFile,Encoding.UTF8);
+
+      string formattedJson =
+          FormatJson(json);
+
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("products.json");
+      AppendConsole("==================================================");
+      AppendConsole(productsFile);
+      AppendConsole("");
+      AppendConsole(formattedJson);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to display products.json : " + ex.Message);
+    }
+  }
+
+  private static void OpenFileInEditor(string filePath) {
+    if (string.IsNullOrWhiteSpace(filePath))
+      return;
+
+    string editorPath =
+        ResolveNotepadPlusPlusPath();
+
+    Process.Start(new ProcessStartInfo {
+      FileName = editorPath,
+      Arguments = "\"" + filePath + "\"",
+      UseShellExecute = false
+    });
+  }
+
+  private static string ResolveNotepadPlusPlusPath() {
+    string programFiles =
+        Environment.GetFolderPath(
+            Environment.SpecialFolder.ProgramFiles);
+
+    string programFilesX86 =
+        Environment.GetFolderPath(
+            Environment.SpecialFolder.ProgramFilesX86);
+
+    string[] candidates = [
+        Path.Combine(programFiles,"Notepad++","notepad++.exe"),
+      Path.Combine(programFilesX86,"Notepad++","notepad++.exe")
+    ];
+
+    foreach (string candidate in candidates) {
+      if (File.Exists(candidate))
+        return candidate;
+    }
+
+    string? pathEnvironment =
+        Environment.GetEnvironmentVariable("PATH");
+
+    if (!string.IsNullOrWhiteSpace(pathEnvironment)) {
+      foreach (string directory in pathEnvironment.Split(Path.PathSeparator)) {
+        if (string.IsNullOrWhiteSpace(directory))
+          continue;
+
+        string candidate =
+            Path.Combine(directory.Trim(),"notepad++.exe");
+
+        if (File.Exists(candidate))
+          return candidate;
+      }
+    }
+
+    return "notepad.exe";
+  }
+
+  private void btnEditProductsJson_Click(object sender,EventArgs e) {
+    try {
+      string productsFile =
+          GetProductsJsonPath();
+
+      if (!File.Exists(productsFile)) {
+        AppendConsole("[ERROR] products.json not found : " + productsFile);
+        return;
+      }
+
+      OpenFileInEditor(productsFile);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to edit products.json : " + ex.Message);
+    }
+  }
+
+  private void btnReloadCatalog_Click(object sender,EventArgs e) {
+    try {
+      LoadCatalog();
+      LoadLatestReportStatus();
+      UpdateProductDetails();
+
+      AppendConsole("[OK] products.json reloaded.");
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to reload products.json : " + ex.Message);
+    }
+  }
+
   private async Task ShowRemoteTextInConsoleAsync(
     string url,
     string title) {
@@ -492,6 +631,45 @@ public partial class MainForm: Form {
     }
   }
 
+  private async Task VerifySelectedProductSha256Async(ProductGridRow row) {
+    try {
+      SetButtonsEnabled(false);
+
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("Verify SHA256 - " + row.DisplayName);
+      AppendConsole("==================================================");
+      AppendConsole("Artifact URL : " + row.ArtifactUrl);
+      AppendConsole("SHA256 URL   : " + row.Sha256Url);
+      AppendConsole("");
+      AppendConsole("[INFO] Downloading SHA256 file and remote artifact...");
+      AppendConsole("[INFO] This may take a while for large MSI/APK files.");
+
+      RemoteSha256VerificationResult result =
+          await _sha256Verifier.VerifyAsync(
+              row.ArtifactUrl,
+              row.Sha256Url);
+
+      AppendConsole("");
+      AppendConsole("Expected SHA256 : " + result.ExpectedHash);
+      AppendConsole("Actual SHA256   : " + result.ActualHash);
+
+      if (result.Success) {
+        AppendConsole("[OK] SHA256 verification succeeded for " + row.DisplayName);
+      }
+      else {
+        AppendConsole("[FAIL] SHA256 verification failed for " + row.DisplayName);
+        AppendConsole("[ERROR] " + result.Message);
+      }
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to verify SHA256 : " + ex.Message);
+    }
+    finally {
+      SetButtonsEnabled(true);
+    }
+  }
+
   private async void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
     ProductGridRow? row = GetSelectedRow();
 
@@ -529,5 +707,14 @@ public partial class MainForm: Form {
     await ShowRemoteTextInConsoleAsync(
         row.Sha256Url,
         "SHA256 - " + row.DisplayName);
+  }
+
+  private async void btnVerifySha256_Click(object sender,EventArgs e) {
+    ProductGridRow? row = GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    await VerifySelectedProductSha256Async(row);
   }
 }

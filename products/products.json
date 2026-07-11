@@ -18,6 +18,17 @@
 	  "localCheck": "disabled"
     },
     {
+      "id": "GestionPlanningPersonnel",
+      "displayName": "Gestion Planning Personnel",
+      "type": "msi",
+      "category": "msi-software-packager",
+      "version": "1.5.7",
+      "artifactFile": "GestionPlanningPersonnel.msi",
+      "hasSha256": true,
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
+    },
+    {
       "id": "PBBZHMobileLab",
       "displayName": "PB BZH Mobile Lab",
       "type": "apk",
@@ -58,6 +69,17 @@
       "category": "msi-software-packager",
       "version": "1.5.3",
       "artifactFile": "GestionServicesGEII.msi",
+      "hasSha256": true,
+      "hasUpdateJson": true,
+	  "localCheck": "disabled"
+    },
+    {
+      "id": "LicenseGenerator",
+      "displayName": "License Generator",
+      "type": "msi",
+      "category": "msi-software-packager",
+      "version": "1.2.3",
+      "artifactFile": "LicenseGenerator.msi",
       "hasSha256": true,
       "hasUpdateJson": true,
 	  "localCheck": "disabled"
