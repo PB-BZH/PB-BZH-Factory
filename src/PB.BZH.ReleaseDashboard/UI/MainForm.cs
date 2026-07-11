@@ -1,9 +1,11 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
 using PB.BZH.ReleaseDashboard.UI.Console;
 using PB.BZH.ReleaseDashboard.UI.Grids;
+using PB.BZH.ReleaseDashboard.UI.Summary;
 
 namespace PB.BZH.ReleaseDashboard.UI;
 
@@ -17,6 +19,12 @@ public partial class MainForm: Form {
 
   public MainForm() {
     InitializeComponent();
+    ReleaseSummaryPresenter.Clear(
+      lblLastCheck,
+      lblSummaryOk,
+      lblSummaryInfo,
+      lblSummaryWarnings,
+      lblSummaryErrors);
     ProductGridViewConfigurator.Configure(dgvProducts);
     LoadCatalog();
   }
@@ -147,7 +155,9 @@ public partial class MainForm: Form {
       SetButtonsEnabled(false);
 
       string psArguments =
-          "-ExecutionPolicy Bypass -File \"" +
+          "-NoLogo -NoProfile -NonInteractive " +
+          "-ExecutionPolicy Bypass " +
+          "-File \"" +
           scriptPath +
           "\"";
 
@@ -162,7 +172,9 @@ public partial class MainForm: Form {
         UseShellExecute = false,
         RedirectStandardOutput = true,
         RedirectStandardError = true,
-        CreateNoWindow = true
+        CreateNoWindow = true,
+        StandardOutputEncoding = Encoding.UTF8,
+        StandardErrorEncoding = Encoding.UTF8
       };
 
       using Process process = new() {
@@ -219,6 +231,14 @@ public partial class MainForm: Form {
           row.LastCheck = string.Empty;
         }
 
+        ReleaseSummaryPresenter.Clear(
+          lblLastCheck,
+          lblSummaryOk,
+          lblSummaryInfo,
+          lblSummaryWarnings,
+          lblSummaryErrors
+        );
+
         dgvProducts.Refresh();
         ApplyGridRowColors();
         AppendConsole("[INFO] No release report found yet.");
@@ -235,6 +255,15 @@ public partial class MainForm: Form {
         row.LastCheck =
             report.GeneratedAtLocal;
       }
+
+      ReleaseSummaryPresenter.Apply(
+        report,
+        lblLastCheck,
+        lblSummaryOk,
+        lblSummaryInfo,
+        lblSummaryWarnings,
+        lblSummaryErrors
+      );
 
       dgvProducts.Refresh();
       ApplyGridRowColors();

@@ -4,7 +4,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 
 $ScriptDirectory = $PSScriptRoot
 $RootDirectory = Split-Path -Parent $ScriptDirectory

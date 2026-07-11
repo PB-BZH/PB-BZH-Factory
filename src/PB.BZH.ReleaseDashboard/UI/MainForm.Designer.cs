@@ -17,6 +17,12 @@ partial class MainForm {
     tlpMain = new TableLayoutPanel();
     lblTitle = new Label();
     pnlHeader = new Panel();
+    flpSummary = new FlowLayoutPanel();
+    lblLastCheck = new Label();
+    lblSummaryInfo = new Label();
+    lblSummaryOk = new Label();
+    lblSummaryWarnings = new Label();
+    lblSummaryErrors = new Label();
     lblRoot = new Label();
     flpToolbar = new FlowLayoutPanel();
     btnRunReleaseCheck = new Button();
@@ -29,6 +35,7 @@ partial class MainForm {
     txtConsole = new RichTextBox();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
+    flpSummary.SuspendLayout();
     flpToolbar.SuspendLayout();
     ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
     SuspendLayout();
@@ -67,6 +74,7 @@ partial class MainForm {
     // 
     // pnlHeader
     // 
+    pnlHeader.Controls.Add(flpSummary);
     pnlHeader.Controls.Add(lblRoot);
     pnlHeader.Controls.Add(flpToolbar);
     pnlHeader.Dock = DockStyle.Fill;
@@ -76,11 +84,75 @@ partial class MainForm {
     pnlHeader.Size = new Size(1156,90);
     pnlHeader.TabIndex = 1;
     // 
+    // flpSummary
+    // 
+    flpSummary.AutoSize = true;
+    flpSummary.Controls.Add(lblLastCheck);
+    flpSummary.Controls.Add(lblSummaryOk);
+    flpSummary.Controls.Add(lblSummaryInfo);
+    flpSummary.Controls.Add(lblSummaryWarnings);
+    flpSummary.Controls.Add(lblSummaryErrors);
+    flpSummary.Location = new Point(0,70);
+    flpSummary.Name = "flpSummary";
+    flpSummary.Size = new Size(1156,24);
+    flpSummary.TabIndex = 2;
+    flpSummary.WrapContents = false;
+    // 
+    // lblLastCheck
+    // 
+    lblLastCheck.AutoSize = true;
+    lblLastCheck.Location = new Point(3,0);
+    lblLastCheck.Name = "lblLastCheck";
+    lblLastCheck.Padding = new Padding(0,0,26,0);
+    lblLastCheck.Size = new Size(94,15);
+    lblLastCheck.TabIndex = 0;
+    lblLastCheck.Text = "Last check :";
+    // 
+    // lblSummaryInfo
+    // 
+    lblSummaryInfo.AutoSize = true;
+    lblSummaryInfo.Location = new Point(170,0);
+    lblSummaryInfo.Name = "lblSummaryInfo";
+    lblSummaryInfo.Padding = new Padding(0,0,24,0);
+    lblSummaryInfo.Size = new Size(71,15);
+    lblSummaryInfo.TabIndex = 3;
+    lblSummaryInfo.Text = "Infos : -";
+    // 
+    // lblSummaryOk
+    // 
+    lblSummaryOk.AutoSize = true;
+    lblSummaryOk.Location = new Point(103,0);
+    lblSummaryOk.Name = "lblSummaryOk";
+    lblSummaryOk.Padding = new Padding(0,0,24,0);
+    lblSummaryOk.Size = new Size(61,15);
+    lblSummaryOk.TabIndex = 1;
+    lblSummaryOk.Text = "OK : -";
+    // 
+    // lblSummaryWarnings
+    // 
+    lblSummaryWarnings.AutoSize = true;
+    lblSummaryWarnings.Location = new Point(247,0);
+    lblSummaryWarnings.Name = "lblSummaryWarnings";
+    lblSummaryWarnings.Padding = new Padding(0,0,24,0);
+    lblSummaryWarnings.Size = new Size(95,15);
+    lblSummaryWarnings.TabIndex = 2;
+    lblSummaryWarnings.Text = "Warnings : -";
+    // 
+    // lblSummaryErrors
+    // 
+    lblSummaryErrors.AutoSize = true;
+    lblSummaryErrors.Location = new Point(345,0);
+    lblSummaryErrors.Margin = new Padding(0);
+    lblSummaryErrors.Name = "lblSummaryErrors";
+    lblSummaryErrors.Size = new Size(51,15);
+    lblSummaryErrors.TabIndex = 3;
+    lblSummaryErrors.Text = "Errors : -";
+    // 
     // lblRoot
     // 
     lblRoot.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
     lblRoot.AutoSize = true;
-    lblRoot.Location = new Point(0,54);
+    lblRoot.Location = new Point(0,45);
     lblRoot.Margin = new Padding(0);
     lblRoot.Name = "lblRoot";
     lblRoot.Size = new Size(38,15);
@@ -220,6 +292,8 @@ partial class MainForm {
     tlpMain.PerformLayout();
     pnlHeader.ResumeLayout(false);
     pnlHeader.PerformLayout();
+    flpSummary.ResumeLayout(false);
+    flpSummary.PerformLayout();
     flpToolbar.ResumeLayout(false);
     flpToolbar.PerformLayout();
     ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
@@ -248,4 +322,10 @@ partial class MainForm {
   private DataGridViewTextBoxColumn colLocalCheck;
   private RichTextBox txtConsole;
   private Button btnOpenUpdateJsonUrl;
+  private FlowLayoutPanel flpSummary;
+  private Label lblLastCheck;
+  private Label lblSummaryOk;
+  private Label lblSummaryWarnings;
+  private Label lblSummaryErrors;
+  private Label lblSummaryInfo;
 }
