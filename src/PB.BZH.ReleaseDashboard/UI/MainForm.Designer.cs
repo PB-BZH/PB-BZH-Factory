@@ -28,10 +28,12 @@ partial class MainForm {
     lblRoot = new Label();
     dgvProducts = new DataGridView();
     colDisplayName = new DataGridViewTextBoxColumn();
+    colLastCheck = new DataGridViewTextBoxColumn();
     colType = new DataGridViewTextBoxColumn();
     colVersion = new DataGridViewTextBoxColumn();
     colArtifactFile = new DataGridViewTextBoxColumn();
     colLocalCheck = new DataGridViewTextBoxColumn();
+    colStatus = new DataGridViewTextBoxColumn();
     txtConsole = new TextBox();
 
     tlpMain.SuspendLayout();
@@ -194,6 +196,8 @@ partial class MainForm {
         colDisplayName,
         colType,
         colVersion,
+        colStatus,
+        colLastCheck,
         colArtifactFile,
         colLocalCheck
       });
@@ -236,6 +240,23 @@ partial class MainForm {
     colVersion.ReadOnly = true;
     colVersion.Width = 100;
 
+    // 
+    // colStatus
+    // 
+    colStatus.DataPropertyName = "Status";
+    colStatus.HeaderText = "Status";
+    colStatus.Name = "colStatus";
+    colStatus.ReadOnly = true;
+    colStatus.Width = 90;
+
+    // 
+    // colLastCheck
+    // 
+    colLastCheck.DataPropertyName = "LastCheck";
+    colLastCheck.HeaderText = "Last Check";
+    colLastCheck.Name = "colLastCheck";
+    colLastCheck.ReadOnly = true;
+    colLastCheck.Width = 160;
     // 
     // colArtifactFile
     // 
@@ -309,6 +330,8 @@ partial class MainForm {
   private DataGridViewTextBoxColumn colDisplayName;
   private DataGridViewTextBoxColumn colType;
   private DataGridViewTextBoxColumn colVersion;
+  private DataGridViewTextBoxColumn colStatus;
+  private DataGridViewTextBoxColumn colLastCheck;
   private DataGridViewTextBoxColumn colArtifactFile;
   private DataGridViewTextBoxColumn colLocalCheck;
   private TextBox txtConsole;
