@@ -39,15 +39,16 @@ partial class MainForm {
     lblDetailType = new Label();
     lblDetailVersion = new Label();
     lblDetailStatus = new Label();
-    lblDetailDownloadUrl = new ();
-    txtDetailDownloadUrl = new ();
-    lblDetailArtifactUrl = new ();
-    txtDetailArtifactUrl = new ();
-    lblDetailSha256Url = new ();
-    txtDetailSha256Url = new ();
+    lblDetailDownloadUrl = new Label();
+    txtDetailDownloadUrl = new RichTextBox();
+    lblDetailArtifactUrl = new Label();
+    txtDetailArtifactUrl = new RichTextBox();
+    lblDetailSha256Url = new Label();
+    txtDetailSha256Url = new RichTextBox();
     lblDetailUpdateJsonUrl = new Label();
-    txtDetailUpdateJsonUrl = new();
+    txtDetailUpdateJsonUrl = new RichTextBox();
     txtConsole = new RichTextBox();
+    btnViewSha256Url = new Button();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpSummary.SuspendLayout();
@@ -188,6 +189,7 @@ partial class MainForm {
     flpToolbar.Controls.Add(btnOpenDownloadUrl);
     flpToolbar.Controls.Add(btnOpenArtifactUrl);
     flpToolbar.Controls.Add(btnOpenUpdateJsonUrl);
+    flpToolbar.Controls.Add(btnViewSha256Url);
     flpToolbar.Dock = DockStyle.Top;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
@@ -262,7 +264,7 @@ partial class MainForm {
     btnOpenUpdateJsonUrl.Name = "btnOpenUpdateJsonUrl";
     btnOpenUpdateJsonUrl.Size = new Size(124,34);
     btnOpenUpdateJsonUrl.TabIndex = 5;
-    btnOpenUpdateJsonUrl.Text = "Open update.json";
+    btnOpenUpdateJsonUrl.Text = "View update.json";
     btnOpenUpdateJsonUrl.UseVisualStyleBackColor = true;
     btnOpenUpdateJsonUrl.Click += btnOpenUpdateJsonUrl_Click;
     // 
@@ -404,7 +406,6 @@ partial class MainForm {
     // txtDetailDownloadUrl
     // 
     txtDetailDownloadUrl.BorderStyle = BorderStyle.FixedSingle;
-    txtDetailDownloadUrl.DetectUrls = true;
     txtDetailDownloadUrl.Dock = DockStyle.Fill;
     txtDetailDownloadUrl.Font = new Font("Consolas",8.5F);
     txtDetailDownloadUrl.Location = new Point(3,86);
@@ -415,8 +416,7 @@ partial class MainForm {
     txtDetailDownloadUrl.TabIndex = 5;
     txtDetailDownloadUrl.Text = "";
     txtDetailDownloadUrl.WordWrap = false;
-    txtDetailDownloadUrl.LinkClicked += detailUrl_LinkClicked;    
-    
+    txtDetailDownloadUrl.LinkClicked += detailUrl_LinkClicked;
     // 
     // lblDetailArtifactUrl
     // 
@@ -431,10 +431,9 @@ partial class MainForm {
     // txtDetailArtifactUrl
     // 
     txtDetailArtifactUrl.BorderStyle = BorderStyle.FixedSingle;
-    txtDetailArtifactUrl.DetectUrls = true;
     txtDetailArtifactUrl.Dock = DockStyle.Fill;
     txtDetailArtifactUrl.Font = new Font("Consolas",8.5F);
-    txtDetailArtifactUrl.Location = new Point(3,146);
+    txtDetailArtifactUrl.Location = new Point(3,143);
     txtDetailArtifactUrl.Name = "txtDetailArtifactUrl";
     txtDetailArtifactUrl.ReadOnly = true;
     txtDetailArtifactUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
@@ -443,7 +442,6 @@ partial class MainForm {
     txtDetailArtifactUrl.Text = "";
     txtDetailArtifactUrl.WordWrap = false;
     txtDetailArtifactUrl.LinkClicked += detailUrl_LinkClicked;
-    
     // 
     // lblDetailSha256Url
     // 
@@ -458,10 +456,9 @@ partial class MainForm {
     // txtDetailSha256Url
     // 
     txtDetailSha256Url.BorderStyle = BorderStyle.FixedSingle;
-    txtDetailSha256Url.DetectUrls = true;
     txtDetailSha256Url.Dock = DockStyle.Fill;
     txtDetailSha256Url.Font = new Font("Consolas",8.5F);
-    txtDetailSha256Url.Location = new Point(3,206);
+    txtDetailSha256Url.Location = new Point(3,200);
     txtDetailSha256Url.Name = "txtDetailSha256Url";
     txtDetailSha256Url.ReadOnly = true;
     txtDetailSha256Url.ScrollBars = RichTextBoxScrollBars.Horizontal;
@@ -470,7 +467,6 @@ partial class MainForm {
     txtDetailSha256Url.Text = "";
     txtDetailSha256Url.WordWrap = false;
     txtDetailSha256Url.LinkClicked += detailUrl_LinkClicked;
-    
     // 
     // lblDetailUpdateJsonUrl
     // 
@@ -485,10 +481,9 @@ partial class MainForm {
     // txtDetailUpdateJsonUrl
     // 
     txtDetailUpdateJsonUrl.BorderStyle = BorderStyle.FixedSingle;
-    txtDetailUpdateJsonUrl.DetectUrls = true;
     txtDetailUpdateJsonUrl.Dock = DockStyle.Fill;
     txtDetailUpdateJsonUrl.Font = new Font("Consolas",8.5F);
-    txtDetailUpdateJsonUrl.Location = new Point(3,266);
+    txtDetailUpdateJsonUrl.Location = new Point(3,257);
     txtDetailUpdateJsonUrl.Name = "txtDetailUpdateJsonUrl";
     txtDetailUpdateJsonUrl.ReadOnly = true;
     txtDetailUpdateJsonUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
@@ -497,7 +492,6 @@ partial class MainForm {
     txtDetailUpdateJsonUrl.Text = "";
     txtDetailUpdateJsonUrl.WordWrap = false;
     txtDetailUpdateJsonUrl.LinkClicked += detailUrl_LinkClicked;
-    
     // 
     // txtConsole
     // 
@@ -514,6 +508,18 @@ partial class MainForm {
     txtConsole.Text = "";
     txtConsole.WordWrap = false;
     txtConsole.LinkClicked += txtConsole_LinkClicked;
+    // 
+    // btnViewSha256Url
+    // 
+    btnViewSha256Url.AutoSize = true;
+    btnViewSha256Url.Location = new Point(820,0);
+    btnViewSha256Url.Margin = new Padding(0,0,8,8);
+    btnViewSha256Url.Name = "btnViewSha256Url";
+    btnViewSha256Url.Size = new Size(124,34);
+    btnViewSha256Url.TabIndex = 5;
+    btnViewSha256Url.Text = "View SHA256";
+    btnViewSha256Url.UseVisualStyleBackColor = true;
+    btnViewSha256Url.Click += btnViewSha256Url_Click;
     // 
     // MainForm
     // 
@@ -580,4 +586,5 @@ partial class MainForm {
   private Label lblDetailUpdateJsonUrl;
   private RichTextBox txtDetailUpdateJsonUrl;
   private RichTextBox txtConsole;
+  private Button btnViewSha256Url;
 }

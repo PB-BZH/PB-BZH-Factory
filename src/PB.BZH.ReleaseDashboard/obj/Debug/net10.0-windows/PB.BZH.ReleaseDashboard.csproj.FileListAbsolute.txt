@@ -1,3 +1,10 @@
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.exe
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.deps.json
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.runtimeconfig.json
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.dll
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.pdb
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.Help.Library.dll
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.Help.Library.pdb
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.csproj.AssemblyReference.cache
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.UI.MainForm.resources
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.csproj.GenerateResource.cache
@@ -6,13 +13,6 @@ G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDash
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.AssemblyInfo.cs
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.csproj.CoreCompileInputs.cache
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.sourcelink.json
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.exe
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.deps.json
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.runtimeconfig.json
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.dll
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.pdb
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.Help.Library.dll
-G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\bin\Debug\net10.0-windows\PB.BZH.Help.Library.pdb
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.R.92642BFE.Up2Date
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.dll
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\src\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\refint\PB.BZH.ReleaseDashboard.dll

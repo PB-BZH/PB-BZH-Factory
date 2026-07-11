@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Json;
 using PB.BZH.Help.Library.UI.Theming;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
@@ -21,6 +22,7 @@ public partial class MainForm: Form {
 
   public MainForm() {
     InitializeComponent();
+    ConsoleContextMenuConfigurator.Configure(txtConsole);
     ThemeManager.ApplyDarkTitleBar(this);
     ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
     ThemeManager.StyleDarkButtons(this);
@@ -312,6 +314,7 @@ public partial class MainForm: Form {
     btnOpenDownloadUrl.Enabled = enabled;
     btnOpenArtifactUrl.Enabled = enabled;
     btnOpenUpdateJsonUrl.Enabled = enabled;
+    btnViewSha256Url.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -409,13 +412,95 @@ public partial class MainForm: Form {
     }
   }
 
-  private void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
+  private async Task ShowRemoteTextInConsoleAsync(
+    string url,
+    string title) {
+    if (string.IsNullOrWhiteSpace(url)) {
+      AppendConsole("[WARN] Remote text URL is empty.");
+      return;
+    }
+
+    try {
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole(title);
+      AppendConsole("==================================================");
+      AppendConsole(url);
+      AppendConsole("");
+
+      using HttpClient client = new();
+
+      string content =
+          await client.GetStringAsync(url);
+
+      AppendConsole(content.Trim());
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to read remote text file : " + ex.Message);
+      AppendConsole("URL : " + url);
+    }
+  }
+
+  private async Task ShowRemoteJsonInConsoleAsync(
+    string url,
+    string title) {
+    if (string.IsNullOrWhiteSpace(url)) {
+      AppendConsole("[WARN] JSON URL is empty.");
+      return;
+    }
+
+    try {
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole(title);
+      AppendConsole("==================================================");
+      AppendConsole(url);
+
+      using HttpClient client = new();
+
+      string jsonText =
+          await client.GetStringAsync(url);
+
+      string formattedJson =
+          FormatJson(jsonText);
+
+      AppendConsole("");
+      AppendConsole(formattedJson);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to read remote JSON : " + ex.Message);
+      AppendConsole("URL : " + url);
+    }
+  }
+
+  private static string FormatJson(string jsonText) {
+    if (string.IsNullOrWhiteSpace(jsonText))
+      return string.Empty;
+
+    try {
+      using JsonDocument document =
+          JsonDocument.Parse(jsonText);
+
+      return JsonSerializer.Serialize(
+          document.RootElement,
+          new JsonSerializerOptions {
+            WriteIndented = true
+          });
+    }
+    catch {
+      return jsonText;
+    }
+  }
+
+  private async void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
     ProductGridRow? row = GetSelectedRow();
 
     if (row == null)
       return;
 
-    OpenUrl(row.UpdateJsonUrl);
+    await ShowRemoteJsonInConsoleAsync(
+        row.UpdateJsonUrl,
+        "update.json - " + row.DisplayName);
   }
 
   private void txtConsole_LinkClicked(object sender,LinkClickedEventArgs e) {
@@ -433,5 +518,16 @@ public partial class MainForm: Form {
       return;
 
     OpenUrl(e.LinkText);
+  }
+
+  private async void btnViewSha256Url_Click(object sender,EventArgs e) {
+    ProductGridRow? row = GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    await ShowRemoteTextInConsoleAsync(
+        row.Sha256Url,
+        "SHA256 - " + row.DisplayName);
   }
 }
