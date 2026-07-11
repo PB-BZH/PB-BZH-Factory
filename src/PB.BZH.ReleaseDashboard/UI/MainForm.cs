@@ -326,18 +326,7 @@ public partial class MainForm: Form {
   private void SetButtonsEnabled(bool enabled) {
     btnRunReleaseCheck.Enabled = enabled;
     btnOpenLastReport.Enabled = enabled;
-    btnOpenReportsFolder.Enabled = enabled;
-    btnOpenDownloadUrl.Enabled = enabled;
-    btnOpenArtifactUrl.Enabled = enabled;
-    btnOpenUpdateJsonUrl.Enabled = enabled;
-    btnViewSha256Url.Enabled = enabled;
-    btnVerifySha256.Enabled = enabled;
-    btnViewProductsJson.Enabled = enabled;
-    btnEditProductsJson.Enabled = enabled;
     btnReloadCatalog.Enabled = enabled;
-    btnViewProductChecks.Enabled = enabled;
-    btnRebuildProductsJson.Enabled = enabled;
-    btnApplyRebuiltProductsJson.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -825,7 +814,6 @@ public partial class MainForm: Form {
       AppendConsole("[INFO] Review the generated JSON, then use Apply rebuilt products.json.");
       AppendConsole("");
       AppendConsole(FormatJson(rebuiltJson));
-      OpenFileInEditor(rebuiltFile);
     }
     catch (Exception ex) {
       AppendConsole("[ERROR] Unable to rebuild products.json : " + ex.Message);

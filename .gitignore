@@ -6,3 +6,7 @@ reports/release-check_*.json
 !reports/.gitkeep
 
 *.vs
+
+# Generated product catalog files
+products/products.rebuilt.json
+products/products.backup_*.json
