@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
+using PB.BZH.ReleaseDashboard.UI.Console;
 using PB.BZH.ReleaseDashboard.UI.Grids;
 
 namespace PB.BZH.ReleaseDashboard.UI;
@@ -277,9 +278,9 @@ public partial class MainForm: Form {
   }
 
   private void AppendConsole(string message) {
-    txtConsole.AppendText(
-        message +
-        Environment.NewLine);
+    ConsoleLogHighlighter.AppendLine(
+        txtConsole,
+        message);
   }
 
   private sealed class ProductGridRow {
@@ -321,5 +322,15 @@ public partial class MainForm: Form {
       return;
 
     OpenUrl(row.UpdateJsonUrl);
+  }
+
+  private void txtConsole_LinkClicked(object sender,LinkClickedEventArgs e) {
+    if (string.IsNullOrWhiteSpace(e.LinkText))
+      return;
+
+    Process.Start(new ProcessStartInfo {
+      FileName = e.LinkText,
+      UseShellExecute = true
+    });
   }
 }

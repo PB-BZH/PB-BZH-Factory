@@ -26,7 +26,7 @@ partial class MainForm {
     btnOpenArtifactUrl = new Button();
     btnOpenUpdateJsonUrl = new Button();
     dgvProducts = new DataGridView();
-    txtConsole = new TextBox();
+    txtConsole = new RichTextBox();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpToolbar.SuspendLayout();
@@ -198,13 +198,13 @@ partial class MainForm {
     txtConsole.ForeColor = Color.Gainsboro;
     txtConsole.Location = new Point(12,474);
     txtConsole.Margin = new Padding(0);
-    txtConsole.Multiline = true;
     txtConsole.Name = "txtConsole";
     txtConsole.ReadOnly = true;
-    txtConsole.ScrollBars = ScrollBars.Both;
     txtConsole.Size = new Size(1156,274);
     txtConsole.TabIndex = 3;
+    txtConsole.Text = "";
     txtConsole.WordWrap = false;
+    txtConsole.LinkClicked += txtConsole_LinkClicked;
     // 
     // MainForm
     // 
@@ -246,6 +246,6 @@ partial class MainForm {
   private DataGridViewTextBoxColumn colLastCheck;
   private DataGridViewTextBoxColumn colArtifactFile;
   private DataGridViewTextBoxColumn colLocalCheck;
-  private TextBox txtConsole;
+  private RichTextBox txtConsole;
   private Button btnOpenUpdateJsonUrl;
 }
