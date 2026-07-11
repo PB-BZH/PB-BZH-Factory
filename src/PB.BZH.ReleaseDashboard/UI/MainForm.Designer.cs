@@ -53,6 +53,7 @@ partial class MainForm {
     lblDetailUpdateJsonUrl = new Label();
     txtDetailUpdateJsonUrl = new RichTextBox();
     txtConsole = new RichTextBox();
+    btnViewProductChecks = new Button();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpSummary.SuspendLayout();
@@ -198,6 +199,7 @@ partial class MainForm {
     flpToolbar.Controls.Add(btnViewProductsJson);
     flpToolbar.Controls.Add(btnEditProductsJson);
     flpToolbar.Controls.Add(btnReloadCatalog);
+    flpToolbar.Controls.Add(btnViewProductChecks);
     flpToolbar.Dock = DockStyle.Fill;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
@@ -577,6 +579,18 @@ partial class MainForm {
     txtConsole.WordWrap = false;
     txtConsole.LinkClicked += txtConsole_LinkClicked;
     // 
+    // btnViewProductChecks
+    // 
+    btnViewProductChecks.AutoSize = true;
+    btnViewProductChecks.Location = new Point(1264,0);
+    btnViewProductChecks.Margin = new Padding(0,0,8,8);
+    btnViewProductChecks.Name = "btnViewProductChecks";
+    btnViewProductChecks.Size = new Size(126,34);
+    btnViewProductChecks.TabIndex = 5;
+    btnViewProductChecks.Text = "View product checks";
+    btnViewProductChecks.UseVisualStyleBackColor = true;
+    btnViewProductChecks.Click += btnViewProductChecks_Click;
+    // 
     // MainForm
     // 
     AutoScaleDimensions = new SizeF(7F,15F);
@@ -647,4 +661,5 @@ partial class MainForm {
   private Button btnViewProductsJson;
   private Button btnEditProductsJson;
   private Button btnReloadCatalog;
+  private Button btnViewProductChecks;
 }

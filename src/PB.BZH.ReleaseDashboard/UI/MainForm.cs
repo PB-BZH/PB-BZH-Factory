@@ -332,6 +332,7 @@ public partial class MainForm: Form {
     btnViewProductsJson.Enabled = enabled;
     btnEditProductsJson.Enabled = enabled;
     btnReloadCatalog.Enabled = enabled;
+    btnViewProductChecks.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -631,6 +632,103 @@ public partial class MainForm: Form {
     }
   }
 
+  private void ShowSelectedProductChecks() {
+    ProductGridRow? row =
+        GetSelectedRow();
+
+    if (row == null) {
+      AppendConsole("[WARN] No product selected.");
+      return;
+    }
+
+    try {
+      ReleaseCheckReport? report =
+          _reportService.LoadLatestReport(_factoryRoot);
+
+      if (report == null) {
+        AppendConsole("[WARN] No release report found.");
+        return;
+      }
+
+      List<ReleaseCheckRow> checks =
+          _reportService.GetProductChecks(
+              report,
+              row.Id,
+              row.DisplayName);
+
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("Checks - " + row.DisplayName);
+      AppendConsole("==================================================");
+      AppendConsole("Last report : " + report.GeneratedAtLocal);
+      AppendConsole("");
+
+      if (checks.Count == 0) {
+        AppendConsole("[INFO] No checks found for this product in the latest report.");
+        AppendConsole("[INFO] Run release check to update the report.");
+        return;
+      }
+
+      int okCount =
+          checks.Count(check => IsStatus(check.Status,"OK"));
+
+      int infoCount =
+          checks.Count(check => IsStatus(check.Status,"INFO"));
+
+      int warnCount =
+          checks.Count(check => IsStatus(check.Status,"WARN"));
+
+      int failCount =
+          checks.Count(check => IsStatus(check.Status,"FAIL"));
+
+      AppendConsole("Product summary");
+      AppendConsole("OK       : " + okCount);
+      AppendConsole("Infos    : " + infoCount);
+      AppendConsole("Warnings : " + warnCount);
+      AppendConsole("Errors   : " + failCount);
+      AppendConsole("");
+
+      foreach (ReleaseCheckRow check in checks) {
+        AppendConsole(
+            "[" +
+            NormalizeReportStatus(check.Status) +
+            "] " +
+            check.Label);
+
+        if (!string.IsNullOrWhiteSpace(check.Details)) {
+          AppendConsole("       " + check.Details);
+        }
+      }
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to show product checks : " + ex.Message);
+    }
+  }
+
+  private static bool IsStatus(
+    string value,
+    string expected) {
+    return string.Equals(
+        value,
+        expected,
+        StringComparison.OrdinalIgnoreCase);
+  }
+
+  private static string NormalizeReportStatus(string status) {
+    if (string.IsNullOrWhiteSpace(status))
+      return "INFO";
+
+    return status.Trim().ToUpperInvariant() switch {
+      "OK" => "OK",
+      "INFO" => "INFO",
+      "WARN" => "WARN",
+      "WARNING" => "WARN",
+      "FAIL" => "FAIL",
+      "ERROR" => "FAIL",
+      _ => status.Trim().ToUpperInvariant()
+    };
+  }
+
   private async Task VerifySelectedProductSha256Async(ProductGridRow row) {
     try {
       SetButtonsEnabled(false);
@@ -716,5 +814,9 @@ public partial class MainForm: Form {
       return;
 
     await VerifySelectedProductSha256Async(row);
+  }
+
+  private void btnViewProductChecks_Click(object sender,EventArgs e) {
+    ShowSelectedProductChecks();
   }
 }

@@ -29,6 +29,20 @@ public sealed class ReleaseReportService {
     return latest?.FullName;
   }
 
+  public List<ReleaseCheckRow> GetProductChecks(
+    ReleaseCheckReport report,
+    string productId,
+    string displayName) {
+    if (report == null)
+      throw new ArgumentNullException(nameof(report));
+
+    return report.Checks
+        .Where(row =>
+            string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase))
+        .ToList();
+  }
+
   public ReleaseCheckReport? LoadLatestReport(string factoryRoot) {
     string? reportPath =
         GetLatestJsonReportPath(factoryRoot);
