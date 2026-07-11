@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using PB.BZH.Help.Library.UI.Theming;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
 using PB.BZH.ReleaseDashboard.UI.Console;
@@ -19,6 +20,16 @@ public partial class MainForm: Form {
 
   public MainForm() {
     InitializeComponent();
+    ThemeManager.ApplyDarkTitleBar(this);
+    ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
+    ThemeManager.StyleDarkButtons(this);
+    ThemeManager.ApplyDarkTheme(this);
+    lblRoot.ForeColor = Color.WhiteSmoke;
+    lblLastCheck.ForeColor = Color.WhiteSmoke;
+    lblSummaryOk.ForeColor = Color.LightGreen;
+    lblSummaryInfo.ForeColor = Color.DeepSkyBlue;
+    lblSummaryWarnings.ForeColor = Color.Orange;
+    lblSummaryErrors.ForeColor = Color.OrangeRed;
     ReleaseSummaryPresenter.Clear(
       lblLastCheck,
       lblSummaryOk,

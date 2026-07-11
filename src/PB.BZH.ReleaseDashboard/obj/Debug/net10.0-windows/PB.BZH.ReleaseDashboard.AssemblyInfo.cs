@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PB.BZH.ReleaseDashboard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bcd7579ace9eeadf97f75ccadb9a7658597f19dd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0174831a39d06bfaf4e458771801776e608609a1")]
 [assembly: System.Reflection.AssemblyProductAttribute("PB.BZH.ReleaseDashboard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PB.BZH.ReleaseDashboard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
