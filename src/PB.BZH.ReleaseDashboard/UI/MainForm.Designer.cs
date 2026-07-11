@@ -506,23 +506,23 @@ partial class MainForm {
     // mnuRunReleaseCheck
     // 
     mnuRunReleaseCheck.Name = "mnuRunReleaseCheck";
-    mnuRunReleaseCheck.Size = new Size(172,22);
+    mnuRunReleaseCheck.Size = new Size(180,22);
     mnuRunReleaseCheck.Text = "Run release check";
-    mnuRunReleaseCheck.Click += btnRunReleaseCheck_Click;
+    mnuRunReleaseCheck.Click += mnuRunReleaseCheck_Click;
     // 
     // mnuOpenLastReport
     // 
     mnuOpenLastReport.Name = "mnuOpenLastReport";
-    mnuOpenLastReport.Size = new Size(172,22);
+    mnuOpenLastReport.Size = new Size(180,22);
     mnuOpenLastReport.Text = "Open last report";
-    mnuOpenLastReport.Click += btnOpenLastReport_Click;
+    mnuOpenLastReport.Click += mnuOpenLastReport_Click;
     // 
     // mnuOpenReportFolder
     // 
     mnuOpenReportFolder.Name = "mnuOpenReportFolder";
-    mnuOpenReportFolder.Size = new Size(172,22);
+    mnuOpenReportFolder.Size = new Size(180,22);
     mnuOpenReportFolder.Text = "Open report folder";
-    mnuOpenReportFolder.Click += btnOpenReportsFolder_Click;
+    mnuOpenReportFolder.Click += mnuOpenReportsFolder_Click;
     // 
     // mnuProduct
     // 
@@ -536,42 +536,42 @@ partial class MainForm {
     mnuOpenDownloadURL.Name = "mnuOpenDownloadURL";
     mnuOpenDownloadURL.Size = new Size(183,22);
     mnuOpenDownloadURL.Text = "Open download URL";
-    mnuOpenDownloadURL.Click += btnOpenDownloadUrl_Click;
+    mnuOpenDownloadURL.Click += mnuOpenDownloadUrl_Click;
     // 
     // mnuOpenArtifactURL
     // 
     mnuOpenArtifactURL.Name = "mnuOpenArtifactURL";
     mnuOpenArtifactURL.Size = new Size(183,22);
     mnuOpenArtifactURL.Text = "Open artifact URL";
-    mnuOpenArtifactURL.Click += btnOpenArtifactUrl_Click;
+    mnuOpenArtifactURL.Click += mnuOpenArtifactUrl_Click;
     // 
     // mnuViewUpdateJson
     // 
     mnuViewUpdateJson.Name = "mnuViewUpdateJson";
     mnuViewUpdateJson.Size = new Size(183,22);
     mnuViewUpdateJson.Text = "View update.json";
-    mnuViewUpdateJson.Click += btnOpenUpdateJsonUrl_Click;
+    mnuViewUpdateJson.Click += mnuViewUpdateJson_Click;
     // 
     // mnuViewSHA256
     // 
     mnuViewSHA256.Name = "mnuViewSHA256";
     mnuViewSHA256.Size = new Size(183,22);
     mnuViewSHA256.Text = "View SHA256";
-    mnuViewSHA256.Click += btnViewSha256Url_Click;
+    mnuViewSHA256.Click += mnuViewSha256_Click;
     // 
     // mnuVerifySHA256
     // 
     mnuVerifySHA256.Name = "mnuVerifySHA256";
     mnuVerifySHA256.Size = new Size(183,22);
     mnuVerifySHA256.Text = "Verify SHA256";
-    mnuVerifySHA256.Click += btnVerifySha256_Click;
+    mnuVerifySHA256.Click += mnuVerifySha256_Click;
     // 
     // mnuViewProductChecks
     // 
     mnuViewProductChecks.Name = "mnuViewProductChecks";
     mnuViewProductChecks.Size = new Size(183,22);
     mnuViewProductChecks.Text = "View product checks";
-    mnuViewProductChecks.Click += btnViewProductChecks_Click;
+    mnuViewProductChecks.Click += mnuViewProductChecks_Click;
     // 
     // mnuCatalog
     // 
@@ -585,35 +585,35 @@ partial class MainForm {
     mnuViewProductjson.Name = "mnuViewProductjson";
     mnuViewProductjson.Size = new Size(217,22);
     mnuViewProductjson.Text = "View products.json";
-    mnuViewProductjson.Click += btnViewProductsJson_Click;
+    mnuViewProductjson.Click += mnuViewUpdateJson_Click;
     // 
     // mnuEditProductsjson
     // 
     mnuEditProductsjson.Name = "mnuEditProductsjson";
     mnuEditProductsjson.Size = new Size(217,22);
     mnuEditProductsjson.Text = "Edit products.json";
-    mnuEditProductsjson.Click += btnEditProductsJson_Click;
+    mnuEditProductsjson.Click += mnuEditProductsJson_Click;
     // 
     // mnuReloadCatalog
     // 
     mnuReloadCatalog.Name = "mnuReloadCatalog";
     mnuReloadCatalog.Size = new Size(217,22);
     mnuReloadCatalog.Text = "Reload catalog";
-    mnuReloadCatalog.Click += btnReloadCatalog_Click;
+    mnuReloadCatalog.Click += mnuReloadCatalog_Click;
     // 
     // mnuRebuildProductsjson
     // 
     mnuRebuildProductsjson.Name = "mnuRebuildProductsjson";
     mnuRebuildProductsjson.Size = new Size(217,22);
     mnuRebuildProductsjson.Text = "Rebuild products.json";
-    mnuRebuildProductsjson.Click += btnRebuildProductsJson_Click;
+    mnuRebuildProductsjson.Click += mnuRebuildProductsJson_Click;
     // 
     // mnuApplyRebuiltProductsjson
     // 
     mnuApplyRebuiltProductsjson.Name = "mnuApplyRebuiltProductsjson";
     mnuApplyRebuiltProductsjson.Size = new Size(217,22);
     mnuApplyRebuiltProductsjson.Text = "Apply rebuilt products.json";
-    mnuApplyRebuiltProductsjson.Click += btnApplyRebuiltProductsJson_Click;
+    mnuApplyRebuiltProductsjson.Click += mnuApplyRebuiltProductsJson_Click;
     // 
     // mnuHelp
     // 

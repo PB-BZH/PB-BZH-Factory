@@ -122,6 +122,14 @@ public partial class MainForm: Form {
   }
 
   private async void btnRunReleaseCheck_Click(object sender,EventArgs e) {
+    await RunReleaseCheckActionAsync();
+  }
+
+  private async void mnuRunReleaseCheck_Click(object sender,EventArgs e) {
+    await RunReleaseCheckActionAsync();
+  }
+
+  private async Task RunReleaseCheckActionAsync() {
     await RunScriptAsync(
         "release\\check-release.ps1",
         "-Report");
@@ -129,45 +137,9 @@ public partial class MainForm: Form {
     LoadLatestReportStatus();
   }
 
-  private async void btnOpenLastReport_Click(object sender,EventArgs e) {
-    await RunScriptAsync(
-        "release\\show-last-report.ps1",
-        string.Empty);
-  }
-
-  private void btnOpenReportsFolder_Click(object sender,EventArgs e) {
-    string reportsFolder =
-        Path.Combine(_factoryRoot,"reports");
-
-    Directory.CreateDirectory(reportsFolder);
-
-    Process.Start(new ProcessStartInfo {
-      FileName = reportsFolder,
-      UseShellExecute = true
-    });
-  }
-
-  private void btnOpenDownloadUrl_Click(object sender,EventArgs e) {
-    ProductGridRow? row = GetSelectedRow();
-
-    if (row == null)
-      return;
-
-    OpenUrl(row.DownloadUrl);
-  }
-
-  private void btnOpenArtifactUrl_Click(object sender,EventArgs e) {
-    ProductGridRow? row = GetSelectedRow();
-
-    if (row == null)
-      return;
-
-    OpenUrl(row.ArtifactUrl);
-  }
-
   private async Task RunScriptAsync(
-      string relativeScriptPath,
-      string arguments) {
+       string relativeScriptPath,
+       string arguments) {
     try {
       string scriptPath =
           Path.Combine(_factoryRoot,relativeScriptPath);
@@ -435,35 +407,6 @@ public partial class MainForm: Form {
         "products.json");
   }
 
-  private void btnViewProductsJson_Click(object sender,EventArgs e) {
-    try {
-      string productsFile =
-          GetProductsJsonPath();
-
-      if (!File.Exists(productsFile)) {
-        AppendConsole("[ERROR] products.json not found : " + productsFile);
-        return;
-      }
-
-      string json =
-          File.ReadAllText(productsFile,Encoding.UTF8);
-
-      string formattedJson =
-          FormatJson(json);
-
-      AppendConsole("");
-      AppendConsole("==================================================");
-      AppendConsole("products.json");
-      AppendConsole("==================================================");
-      AppendConsole(productsFile);
-      AppendConsole("");
-      AppendConsole(formattedJson);
-    }
-    catch (Exception ex) {
-      AppendConsole("[ERROR] Unable to display products.json : " + ex.Message);
-    }
-  }
-
   private static void OpenFileInEditor(string filePath) {
     if (string.IsNullOrWhiteSpace(filePath))
       return;
@@ -514,36 +457,6 @@ public partial class MainForm: Form {
     }
 
     return "notepad.exe";
-  }
-
-  private void btnEditProductsJson_Click(object sender,EventArgs e) {
-    try {
-      string productsFile =
-          GetProductsJsonPath();
-
-      if (!File.Exists(productsFile)) {
-        AppendConsole("[ERROR] products.json not found : " + productsFile);
-        return;
-      }
-
-      OpenFileInEditor(productsFile);
-    }
-    catch (Exception ex) {
-      AppendConsole("[ERROR] Unable to edit products.json : " + ex.Message);
-    }
-  }
-
-  private void btnReloadCatalog_Click(object sender,EventArgs e) {
-    try {
-      LoadCatalog();
-      LoadLatestReportStatus();
-      UpdateProductDetails();
-
-      AppendConsole("[OK] products.json reloaded.");
-    }
-    catch (Exception ex) {
-      AppendConsole("[ERROR] Unable to reload products.json : " + ex.Message);
-    }
   }
 
   private async Task ShowRemoteTextInConsoleAsync(
@@ -936,17 +849,6 @@ public partial class MainForm: Form {
     }
   }
 
-  private async void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
-    ProductGridRow? row = GetSelectedRow();
-
-    if (row == null)
-      return;
-
-    await ShowRemoteJsonInConsoleAsync(
-        row.UpdateJsonUrl,
-        "update.json - " + row.DisplayName);
-  }
-
   private void txtConsole_LinkClicked(object sender,LinkClickedEventArgs e) {
     if (string.IsNullOrWhiteSpace(e.LinkText))
       return;
@@ -964,8 +866,42 @@ public partial class MainForm: Form {
     OpenUrl(e.LinkText);
   }
 
-  private async void btnViewSha256Url_Click(object sender,EventArgs e) {
-    ProductGridRow? row = GetSelectedRow();
+  //---------------------------------------------------------------------
+  private void OpenDownloadUrlAction() {
+    ProductGridRow? row =
+        GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    OpenUrl(row.DownloadUrl);
+  }
+
+  private void OpenArtifactUrlAction() {
+    ProductGridRow? row =
+        GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    OpenUrl(row.ArtifactUrl);
+  }
+
+  private async Task ViewUpdateJsonActionAsync() {
+    ProductGridRow? row =
+        GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    await ShowRemoteJsonInConsoleAsync(
+        row.UpdateJsonUrl,
+        "update.json - " + row.DisplayName);
+  }
+
+  private async Task ViewSha256ActionAsync() {
+    ProductGridRow? row =
+        GetSelectedRow();
 
     if (row == null)
       return;
@@ -975,8 +911,9 @@ public partial class MainForm: Form {
         "SHA256 - " + row.DisplayName);
   }
 
-  private async void btnVerifySha256_Click(object sender,EventArgs e) {
-    ProductGridRow? row = GetSelectedRow();
+  private async Task VerifySha256ActionAsync() {
+    ProductGridRow? row =
+        GetSelectedRow();
 
     if (row == null)
       return;
@@ -984,15 +921,187 @@ public partial class MainForm: Form {
     await VerifySelectedProductSha256Async(row);
   }
 
-  private void btnViewProductChecks_Click(object sender,EventArgs e) {
-    ShowSelectedProductChecks();
+  private async Task OpenLastReportActionAsync() {
+    await RunScriptAsync(
+        "release\\show-last-report.ps1",
+        string.Empty);
   }
 
-  private async void btnRebuildProductsJson_Click(object sender,EventArgs e) {
+  private void OpenReportsFolderAction() {
+    string reportsFolder =
+        Path.Combine(_factoryRoot,"reports");
+
+    Directory.CreateDirectory(reportsFolder);
+
+    Process.Start(new ProcessStartInfo {
+      FileName = reportsFolder,
+      UseShellExecute = true
+    });
+  }
+
+  private void ViewProductsJsonAction() {
+    try {
+      string productsFile =
+          GetProductsJsonPath();
+
+      if (!File.Exists(productsFile)) {
+        AppendConsole("[ERROR] products.json not found : " + productsFile);
+        return;
+      }
+
+      string json =
+          File.ReadAllText(
+              productsFile,
+              Encoding.UTF8);
+
+      string formattedJson =
+          FormatJson(json);
+
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("products.json");
+      AppendConsole("==================================================");
+      AppendConsole(productsFile);
+      AppendConsole("");
+      AppendConsole(formattedJson);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to display products.json : " + ex.Message);
+    }
+  }
+
+  private void EditProductsJsonAction() {
+    try {
+      string productsFile =
+          GetProductsJsonPath();
+
+      if (!File.Exists(productsFile)) {
+        AppendConsole("[ERROR] products.json not found : " + productsFile);
+        return;
+      }
+
+      OpenFileInEditor(productsFile);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to edit products.json : " + ex.Message);
+    }
+  }
+
+  private void ReloadCatalogAction() {
+    try {
+      LoadCatalog();
+      UpdateProductDetails();
+
+      AppendConsole("[OK] products.json reloaded.");
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to reload products.json : " + ex.Message);
+    }
+  }
+
+  private async Task RebuildProductsJsonActionAsync() {
     await RebuildProductsJsonFromSiteAsync();
   }
 
-  private void btnApplyRebuiltProductsJson_Click(object sender,EventArgs e) {
+  private void ApplyRebuiltProductsJsonAction() {
     ApplyRebuiltProductsJson();
+  }
+
+  private void ViewProductChecksAction() {
+    ShowSelectedProductChecks();
+  }
+
+  private void btnOpenDownloadUrl_Click(object sender,EventArgs e) {
+    OpenDownloadUrlAction();
+  }
+
+  private void mnuOpenDownloadUrl_Click(object sender,EventArgs e) {
+    OpenDownloadUrlAction();
+  }
+
+  private void btnOpenArtifactUrl_Click(object sender,EventArgs e) {
+    OpenArtifactUrlAction();
+  }
+
+  private void mnuOpenArtifactUrl_Click(object sender,EventArgs e) {
+    OpenArtifactUrlAction();
+  }
+
+  private async void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
+    await ViewUpdateJsonActionAsync();
+  }
+
+  private async void mnuViewUpdateJson_Click(object sender,EventArgs e) {
+    await ViewUpdateJsonActionAsync();
+  }
+
+  private async void btnViewSha256Url_Click(object sender,EventArgs e) {
+    await ViewSha256ActionAsync();
+  }
+
+  private async void mnuViewSha256_Click(object sender,EventArgs e) {
+    await ViewSha256ActionAsync();
+  }
+
+  private async void btnVerifySha256_Click(object sender,EventArgs e) {
+    await VerifySha256ActionAsync();
+  }
+
+  private async void mnuVerifySha256_Click(object sender,EventArgs e) {
+    await VerifySha256ActionAsync();
+  }
+
+  private void btnViewProductChecks_Click(object sender,EventArgs e) {
+    ViewProductChecksAction();
+  }
+
+  private void mnuViewProductChecks_Click(object sender,EventArgs e) {
+    ViewProductChecksAction();
+  }
+
+  private async void btnOpenLastReport_Click(object sender,EventArgs e) {
+    await OpenLastReportActionAsync();
+  }
+
+  private async void mnuOpenLastReport_Click(object sender,EventArgs e) {
+    await OpenLastReportActionAsync();
+  }
+
+  private void btnOpenReportsFolder_Click(object sender,EventArgs e) {
+    OpenReportsFolderAction();
+  }
+
+  private void mnuOpenReportsFolder_Click(object sender,EventArgs e) {
+    OpenReportsFolderAction();
+  }
+  private void btnEditProductsJson_Click(object sender,EventArgs e) {
+    EditProductsJsonAction();
+  }
+
+  private void mnuEditProductsJson_Click(object sender,EventArgs e) {
+    EditProductsJsonAction();
+  }
+
+  private void btnReloadCatalog_Click(object sender,EventArgs e) {
+    ReloadCatalogAction();
+  }
+
+  private void mnuReloadCatalog_Click(object sender,EventArgs e) {
+    ReloadCatalogAction();
+  }
+
+  private async void btnRebuildProductsJson_Click(object sender,EventArgs e) {
+    await RebuildProductsJsonActionAsync();
+  }
+
+  private async void mnuRebuildProductsJson_Click(object sender,EventArgs e) {
+    await RebuildProductsJsonActionAsync();
+  }
+
+  private void btnApplyRebuiltProductsJson_Click(object sender,EventArgs e) {
+    ApplyRebuiltProductsJsonAction();
+  }
+  private void mnuApplyRebuiltProductsJson_Click(object sender,EventArgs e) {
+    ApplyRebuiltProductsJsonAction();
   }
 }
