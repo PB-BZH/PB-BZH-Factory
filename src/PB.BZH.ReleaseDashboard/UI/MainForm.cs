@@ -5,6 +5,7 @@ using PB.BZH.Help.Library.UI.Theming;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
 using PB.BZH.ReleaseDashboard.UI.Console;
+using PB.BZH.ReleaseDashboard.UI.Details;
 using PB.BZH.ReleaseDashboard.UI.Grids;
 using PB.BZH.ReleaseDashboard.UI.Summary;
 
@@ -39,6 +40,16 @@ public partial class MainForm: Form {
     lblSummaryInfo.ForeColor = Color.DeepSkyBlue;
     lblSummaryWarnings.ForeColor = Color.Orange;
     lblSummaryErrors.ForeColor = Color.OrangeRed;
+    ProductDetailsPresenter.Clear(
+    lblDetailProduct,
+    lblDetailType,
+    lblDetailVersion,
+    lblDetailStatus,
+    txtDetailDownloadUrl,
+    txtDetailArtifactUrl,
+    txtDetailSha256Url,
+    txtDetailUpdateJsonUrl);
+
     LoadCatalog();
   }
 
@@ -62,6 +73,7 @@ public partial class MainForm: Form {
           );
 
       dgvProducts.DataSource = _rows;
+      UpdateProductDetails();
 
       lblRoot.Text = "Root : " + _factoryRoot;
 
@@ -280,6 +292,7 @@ public partial class MainForm: Form {
 
       dgvProducts.Refresh();
       ApplyGridRowColors();
+      UpdateProductDetails();
 
       AppendConsole("[OK] Latest release report loaded : " + report.GeneratedAtLocal);
     }
@@ -325,6 +338,45 @@ public partial class MainForm: Form {
         message);
   }
 
+  private void dgvProducts_SelectionChanged(object? sender,EventArgs e) {
+    UpdateProductDetails();
+  }
+
+  private void UpdateProductDetails() {
+    ProductGridRow? row = GetSelectedRow();
+
+    if (row == null) {
+      ProductDetailsPresenter.Clear(
+          lblDetailProduct,
+          lblDetailType,
+          lblDetailVersion,
+          lblDetailStatus,
+          txtDetailDownloadUrl,
+          txtDetailArtifactUrl,
+          txtDetailSha256Url,
+          txtDetailUpdateJsonUrl);
+      return;
+    }
+
+    ProductDetailsPresenter.Apply(
+        row.DisplayName,
+        row.Type,
+        row.Version,
+        row.Status,
+        row.DownloadUrl,
+        row.ArtifactUrl,
+        row.Sha256Url,
+        row.UpdateJsonUrl,
+        lblDetailProduct,
+        lblDetailType,
+        lblDetailVersion,
+        lblDetailStatus,
+        txtDetailDownloadUrl,
+        txtDetailArtifactUrl,
+        txtDetailSha256Url,
+        txtDetailUpdateJsonUrl);
+  }
+
   private sealed class ProductGridRow {
     public string Id { get; set; } = string.Empty;
     public string DisplayName { get; set; } = string.Empty;
@@ -337,10 +389,9 @@ public partial class MainForm: Form {
     public string DownloadUrl { get; set; } = string.Empty;
     public string ArtifactUrl { get; set; } = string.Empty;
     public string UpdateJsonUrl { get; set; } = string.Empty;
+    public string Sha256Url { get; set; } = string.Empty;
 
-    public static ProductGridRow FromProduct(
-        ProductInfo product,
-        string softwaresUrl) {
+    public static ProductGridRow FromProduct(ProductInfo product,string softwaresUrl) {
       return new ProductGridRow {
         Id = product.Id,
         DisplayName = product.DisplayName,
@@ -352,7 +403,8 @@ public partial class MainForm: Form {
         LocalCheck = product.LocalCheck,
         DownloadUrl = product.GetDownloadUrl(softwaresUrl),
         ArtifactUrl = product.GetArtifactUrl(softwaresUrl),
-        UpdateJsonUrl = product.GetUpdateJsonUrl(softwaresUrl)
+        UpdateJsonUrl = product.GetUpdateJsonUrl(softwaresUrl),
+        Sha256Url = product.GetSha256Url(softwaresUrl),
       };
     }
   }
@@ -374,5 +426,12 @@ public partial class MainForm: Form {
       FileName = e.LinkText,
       UseShellExecute = true
     });
+  }
+
+  private void detailUrl_LinkClicked(object sender,LinkClickedEventArgs e) {
+    if (string.IsNullOrWhiteSpace(e.LinkText))
+      return;
+
+    OpenUrl(e.LinkText);
   }
 }
