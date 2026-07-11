@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using PB.BZH.ReleaseDashboard.Core.Models;
 using PB.BZH.ReleaseDashboard.Core.Services;
+using PB.BZH.ReleaseDashboard.UI.Grids;
 
 namespace PB.BZH.ReleaseDashboard.UI;
 
@@ -15,6 +16,7 @@ public partial class MainForm: Form {
 
   public MainForm() {
     InitializeComponent();
+    ProductGridViewConfigurator.Configure(dgvProducts);
     LoadCatalog();
   }
 
@@ -244,32 +246,7 @@ public partial class MainForm: Form {
   }
 
   private void ApplyGridRowColors() {
-    foreach (DataGridViewRow gridRow in dgvProducts.Rows) {
-      if (gridRow.DataBoundItem is not ProductGridRow row)
-        continue;
-
-      switch (row.Status.ToUpperInvariant()) {
-        case "OK":
-          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(210,245,210);
-          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkGreen;
-          break;
-
-        case "WARN":
-          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(255,240,190);
-          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkOrange;
-          break;
-
-        case "FAIL":
-          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(255,210,210);
-          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkRed;
-          break;
-
-        default:
-          gridRow.Cells["colStatus"].Style.BackColor = Color.White;
-          gridRow.Cells["colStatus"].Style.ForeColor = Color.Gray;
-          break;
-      }
-    }
+    ProductGridViewConfigurator.ApplyStatusColors(dgvProducts);
   }
 
   private void SetButtonsEnabled(bool enabled) {
@@ -278,6 +255,7 @@ public partial class MainForm: Form {
     btnOpenReportsFolder.Enabled = enabled;
     btnOpenDownloadUrl.Enabled = enabled;
     btnOpenArtifactUrl.Enabled = enabled;
+    btnOpenUpdateJsonUrl.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -315,6 +293,7 @@ public partial class MainForm: Form {
     public string LocalCheck { get; set; } = string.Empty;
     public string DownloadUrl { get; set; } = string.Empty;
     public string ArtifactUrl { get; set; } = string.Empty;
+    public string UpdateJsonUrl { get; set; } = string.Empty;
 
     public static ProductGridRow FromProduct(
         ProductInfo product,
@@ -329,8 +308,18 @@ public partial class MainForm: Form {
         ArtifactFile = product.ArtifactFile,
         LocalCheck = product.LocalCheck,
         DownloadUrl = product.GetDownloadUrl(softwaresUrl),
-        ArtifactUrl = product.GetArtifactUrl(softwaresUrl)
+        ArtifactUrl = product.GetArtifactUrl(softwaresUrl),
+        UpdateJsonUrl = product.GetUpdateJsonUrl(softwaresUrl)
       };
     }
+  }
+
+  private void btnOpenUpdateJsonUrl_Click(object sender,EventArgs e) {
+    ProductGridRow? row = GetSelectedRow();
+
+    if (row == null)
+      return;
+
+    OpenUrl(row.UpdateJsonUrl);
   }
 }

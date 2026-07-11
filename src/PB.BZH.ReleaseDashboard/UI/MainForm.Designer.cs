@@ -14,34 +14,24 @@ partial class MainForm {
   #region Windows Form Designer generated code
 
   private void InitializeComponent() {
-    components = new System.ComponentModel.Container();
-
     tlpMain = new TableLayoutPanel();
     lblTitle = new Label();
     pnlHeader = new Panel();
+    lblRoot = new Label();
     flpToolbar = new FlowLayoutPanel();
     btnRunReleaseCheck = new Button();
     btnOpenLastReport = new Button();
     btnOpenReportsFolder = new Button();
     btnOpenDownloadUrl = new Button();
     btnOpenArtifactUrl = new Button();
-    lblRoot = new Label();
+    btnOpenUpdateJsonUrl = new Button();
     dgvProducts = new DataGridView();
-    colDisplayName = new DataGridViewTextBoxColumn();
-    colLastCheck = new DataGridViewTextBoxColumn();
-    colType = new DataGridViewTextBoxColumn();
-    colVersion = new DataGridViewTextBoxColumn();
-    colArtifactFile = new DataGridViewTextBoxColumn();
-    colLocalCheck = new DataGridViewTextBoxColumn();
-    colStatus = new DataGridViewTextBoxColumn();
     txtConsole = new TextBox();
-
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpToolbar.SuspendLayout();
     ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
     SuspendLayout();
-
     // 
     // tlpMain
     // 
@@ -56,26 +46,24 @@ partial class MainForm {
     tlpMain.Name = "tlpMain";
     tlpMain.Padding = new Padding(12);
     tlpMain.RowCount = 4;
-    tlpMain.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+    tlpMain.RowStyles.Add(new RowStyle());
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute,90F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,55F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,45F));
     tlpMain.Size = new Size(1180,760);
     tlpMain.TabIndex = 0;
-
     // 
     // lblTitle
     // 
     lblTitle.AutoSize = true;
     lblTitle.Dock = DockStyle.Fill;
-    lblTitle.Font = new Font("Segoe UI",16F,FontStyle.Bold,GraphicsUnit.Point);
+    lblTitle.Font = new Font("Segoe UI",16F,FontStyle.Bold);
     lblTitle.Location = new Point(12,12);
     lblTitle.Margin = new Padding(0,0,0,8);
     lblTitle.Name = "lblTitle";
     lblTitle.Size = new Size(1156,30);
     lblTitle.TabIndex = 0;
     lblTitle.Text = "PB BZH Release Dashboard";
-
     // 
     // pnlHeader
     // 
@@ -87,24 +75,31 @@ partial class MainForm {
     pnlHeader.Name = "pnlHeader";
     pnlHeader.Size = new Size(1156,90);
     pnlHeader.TabIndex = 1;
-
+    // 
+    // lblRoot
+    // 
+    lblRoot.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+    lblRoot.AutoSize = true;
+    lblRoot.Location = new Point(0,54);
+    lblRoot.Margin = new Padding(0);
+    lblRoot.Name = "lblRoot";
+    lblRoot.Size = new Size(38,15);
+    lblRoot.TabIndex = 1;
+    lblRoot.Text = "Root :";
     // 
     // flpToolbar
     // 
-    flpToolbar.AutoSize = false;
     flpToolbar.Controls.Add(btnRunReleaseCheck);
     flpToolbar.Controls.Add(btnOpenLastReport);
     flpToolbar.Controls.Add(btnOpenReportsFolder);
     flpToolbar.Controls.Add(btnOpenDownloadUrl);
     flpToolbar.Controls.Add(btnOpenArtifactUrl);
+    flpToolbar.Controls.Add(btnOpenUpdateJsonUrl);
     flpToolbar.Dock = DockStyle.Top;
-    flpToolbar.FlowDirection = FlowDirection.LeftToRight;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
     flpToolbar.Size = new Size(1156,42);
     flpToolbar.TabIndex = 0;
-    flpToolbar.WrapContents = true;
-
     // 
     // btnRunReleaseCheck
     // 
@@ -117,7 +112,6 @@ partial class MainForm {
     btnRunReleaseCheck.Text = "Run release check";
     btnRunReleaseCheck.UseVisualStyleBackColor = true;
     btnRunReleaseCheck.Click += btnRunReleaseCheck_Click;
-
     // 
     // btnOpenLastReport
     // 
@@ -130,7 +124,6 @@ partial class MainForm {
     btnOpenLastReport.Text = "Open last report";
     btnOpenLastReport.UseVisualStyleBackColor = true;
     btnOpenLastReport.Click += btnOpenLastReport_Click;
-
     // 
     // btnOpenReportsFolder
     // 
@@ -143,7 +136,6 @@ partial class MainForm {
     btnOpenReportsFolder.Text = "Open reports folder";
     btnOpenReportsFolder.UseVisualStyleBackColor = true;
     btnOpenReportsFolder.Click += btnOpenReportsFolder_Click;
-
     // 
     // btnOpenDownloadUrl
     // 
@@ -156,7 +148,6 @@ partial class MainForm {
     btnOpenDownloadUrl.Text = "Open download URL";
     btnOpenDownloadUrl.UseVisualStyleBackColor = true;
     btnOpenDownloadUrl.Click += btnOpenDownloadUrl_Click;
-
     // 
     // btnOpenArtifactUrl
     // 
@@ -169,38 +160,25 @@ partial class MainForm {
     btnOpenArtifactUrl.Text = "Open artifact URL";
     btnOpenArtifactUrl.UseVisualStyleBackColor = true;
     btnOpenArtifactUrl.Click += btnOpenArtifactUrl_Click;
-
     // 
-    // lblRoot
+    // btnOpenUpdateJsonUrl
     // 
-    lblRoot.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-    lblRoot.AutoSize = true;
-    lblRoot.Location = new Point(0,54);
-    lblRoot.Margin = new Padding(0);
-    lblRoot.Name = "lblRoot";
-    lblRoot.Size = new Size(40,15);
-    lblRoot.TabIndex = 1;
-    lblRoot.Text = "Root :";
-
+    btnOpenUpdateJsonUrl.AutoSize = true;
+    btnOpenUpdateJsonUrl.Location = new Point(688,0);
+    btnOpenUpdateJsonUrl.Margin = new Padding(0,0,8,8);
+    btnOpenUpdateJsonUrl.Name = "btnOpenUpdateJsonUrl";
+    btnOpenUpdateJsonUrl.Size = new Size(124,34);
+    btnOpenUpdateJsonUrl.TabIndex = 4;
+    btnOpenUpdateJsonUrl.Text = "Open update.json";
+    btnOpenUpdateJsonUrl.UseVisualStyleBackColor = true;
+    btnOpenUpdateJsonUrl.Click += btnOpenUpdateJsonUrl_Click;
     // 
     // dgvProducts
     // 
     dgvProducts.AllowUserToAddRows = false;
     dgvProducts.AllowUserToDeleteRows = false;
-    dgvProducts.AutoGenerateColumns = false;
-    dgvProducts.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
     dgvProducts.BackgroundColor = SystemColors.Window;
     dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-    dgvProducts.Columns.AddRange(
-      new DataGridViewColumn[] {
-        colDisplayName,
-        colType,
-        colVersion,
-        colStatus,
-        colLastCheck,
-        colArtifactFile,
-        colLocalCheck
-      });
     dgvProducts.Dock = DockStyle.Fill;
     dgvProducts.Location = new Point(12,140);
     dgvProducts.Margin = new Padding(0,0,0,8);
@@ -209,89 +187,24 @@ partial class MainForm {
     dgvProducts.ReadOnly = true;
     dgvProducts.RowHeadersVisible = false;
     dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-    dgvProducts.Size = new Size(1156,328);
+    dgvProducts.Size = new Size(1156,326);
     dgvProducts.TabIndex = 2;
-
-    // 
-    // colDisplayName
-    // 
-    colDisplayName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-    colDisplayName.DataPropertyName = "DisplayName";
-    colDisplayName.HeaderText = "Product";
-    colDisplayName.MinimumWidth = 180;
-    colDisplayName.Name = "colDisplayName";
-    colDisplayName.ReadOnly = true;
-
-    // 
-    // colType
-    // 
-    colType.DataPropertyName = "Type";
-    colType.HeaderText = "Type";
-    colType.Name = "colType";
-    colType.ReadOnly = true;
-    colType.Width = 80;
-
-    // 
-    // colVersion
-    // 
-    colVersion.DataPropertyName = "Version";
-    colVersion.HeaderText = "Version";
-    colVersion.Name = "colVersion";
-    colVersion.ReadOnly = true;
-    colVersion.Width = 100;
-
-    // 
-    // colStatus
-    // 
-    colStatus.DataPropertyName = "Status";
-    colStatus.HeaderText = "Status";
-    colStatus.Name = "colStatus";
-    colStatus.ReadOnly = true;
-    colStatus.Width = 90;
-
-    // 
-    // colLastCheck
-    // 
-    colLastCheck.DataPropertyName = "LastCheck";
-    colLastCheck.HeaderText = "Last Check";
-    colLastCheck.Name = "colLastCheck";
-    colLastCheck.ReadOnly = true;
-    colLastCheck.Width = 160;
-    // 
-    // colArtifactFile
-    // 
-    colArtifactFile.DataPropertyName = "ArtifactFile";
-    colArtifactFile.HeaderText = "Artifact";
-    colArtifactFile.Name = "colArtifactFile";
-    colArtifactFile.ReadOnly = true;
-    colArtifactFile.Width = 280;
-
-    // 
-    // colLocalCheck
-    // 
-    colLocalCheck.DataPropertyName = "LocalCheck";
-    colLocalCheck.HeaderText = "Local check";
-    colLocalCheck.Name = "colLocalCheck";
-    colLocalCheck.ReadOnly = true;
-    colLocalCheck.Width = 120;
-
     // 
     // txtConsole
     // 
     txtConsole.BackColor = Color.FromArgb(30,30,30);
     txtConsole.Dock = DockStyle.Fill;
-    txtConsole.Font = new Font("Consolas",9F,FontStyle.Regular,GraphicsUnit.Point);
+    txtConsole.Font = new Font("Consolas",9F);
     txtConsole.ForeColor = Color.Gainsboro;
-    txtConsole.Location = new Point(12,476);
+    txtConsole.Location = new Point(12,474);
     txtConsole.Margin = new Padding(0);
     txtConsole.Multiline = true;
     txtConsole.Name = "txtConsole";
     txtConsole.ReadOnly = true;
     txtConsole.ScrollBars = ScrollBars.Both;
-    txtConsole.Size = new Size(1156,272);
+    txtConsole.Size = new Size(1156,274);
     txtConsole.TabIndex = 3;
     txtConsole.WordWrap = false;
-
     // 
     // MainForm
     // 
@@ -303,7 +216,6 @@ partial class MainForm {
     Name = "MainForm";
     StartPosition = FormStartPosition.CenterScreen;
     Text = "PB BZH Release Dashboard";
-
     tlpMain.ResumeLayout(false);
     tlpMain.PerformLayout();
     pnlHeader.ResumeLayout(false);
@@ -335,4 +247,5 @@ partial class MainForm {
   private DataGridViewTextBoxColumn colArtifactFile;
   private DataGridViewTextBoxColumn colLocalCheck;
   private TextBox txtConsole;
+  private Button btnOpenUpdateJsonUrl;
 }
