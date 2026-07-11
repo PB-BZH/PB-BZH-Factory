@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using PB.BZH.Help.Library.UI.Theming;
 using PB.BZH.ReleaseDashboard.Core.Models;
@@ -16,6 +17,8 @@ public partial class MainForm: Form {
   private readonly ProductCatalogService _catalogService = new();
   private readonly ReleaseReportService _reportService = new();
   private readonly RemoteSha256Verifier _sha256Verifier = new();
+  private readonly RemoteProductCatalogBuilder _remoteCatalogBuilder = new();
+  private string _lastRebuiltProductsJsonPath = string.Empty;
 
   private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
@@ -333,6 +336,8 @@ public partial class MainForm: Form {
     btnEditProductsJson.Enabled = enabled;
     btnReloadCatalog.Enabled = enabled;
     btnViewProductChecks.Enabled = enabled;
+    btnRebuildProductsJson.Enabled = enabled;
+    btnApplyRebuiltProductsJson.Enabled = enabled;
   }
 
   private ProductGridRow? GetSelectedRow() {
@@ -729,6 +734,107 @@ public partial class MainForm: Form {
     };
   }
 
+  private async Task RebuildProductsJsonFromSiteAsync() {
+    if (_catalog == null) {
+      AppendConsole("[ERROR] products catalog is not loaded.");
+      return;
+    }
+
+    try {
+      SetButtonsEnabled(false);
+
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("Rebuild products.json from website");
+      AppendConsole("==================================================");
+
+      RemoteProductCatalogBuildResult result =
+          await _remoteCatalogBuilder.BuildAsync(
+              _catalog,
+              "msi-software-packager");
+
+      foreach (string message in result.Messages) {
+        AppendConsole(message);
+      }
+
+      foreach (string error in result.Errors) {
+        AppendConsole(error);
+      }
+
+      string productsDirectory =
+          Path.Combine(
+              _factoryRoot,
+              "products");
+
+      Directory.CreateDirectory(productsDirectory);
+
+      string rebuiltFile =
+          Path.Combine(
+              productsDirectory,
+              "products.rebuilt.json");
+
+      JsonSerializerOptions jsonOptions = new() {
+        WriteIndented = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+      };
+
+      string rebuiltJson =
+          JsonSerializer.Serialize(
+              result.Catalog,
+              jsonOptions);
+
+      File.WriteAllText(
+          rebuiltFile,
+          rebuiltJson,
+          new UTF8Encoding(false));
+
+      AppendConsole("");
+      AppendConsole("[OK] Rebuilt products file generated : " + rebuiltFile);
+      AppendConsole("");
+      AppendConsole(FormatJson(rebuiltJson));
+
+      string productsFile =
+          GetProductsJsonPath();
+
+      string backupFile =
+          Path.Combine(
+              productsDirectory,
+              "products.backup_" +
+              DateTime.Now.ToString("yyyyMMdd_HHmmss") +
+              ".json");
+
+      if (File.Exists(productsFile)) {
+        File.Copy(
+            productsFile,
+            backupFile,
+            overwrite: true);
+
+        AppendConsole("[OK] Backup created : " + backupFile);
+      }
+
+      File.Copy(
+          rebuiltFile,
+          productsFile,
+          overwrite: true);
+
+      _lastRebuiltProductsJsonPath = rebuiltFile;
+
+      AppendConsole("");
+      AppendConsole("[OK] Rebuilt products file generated : " + rebuiltFile);
+      AppendConsole("[INFO] products.json was not replaced.");
+      AppendConsole("[INFO] Review the generated JSON, then use Apply rebuilt products.json.");
+      AppendConsole("");
+      AppendConsole(FormatJson(rebuiltJson));
+      OpenFileInEditor(rebuiltFile);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to rebuild products.json : " + ex.Message);
+    }
+    finally {
+      SetButtonsEnabled(true);
+    }
+  }
+
   private async Task VerifySelectedProductSha256Async(ProductGridRow row) {
     try {
       SetButtonsEnabled(false);
@@ -765,6 +871,80 @@ public partial class MainForm: Form {
     }
     finally {
       SetButtonsEnabled(true);
+    }
+  }
+
+  private void ApplyRebuiltProductsJson() {
+    try {
+      string productsDirectory =
+          Path.Combine(
+              _factoryRoot,
+              "products");
+
+      string rebuiltFile =
+          _lastRebuiltProductsJsonPath;
+
+      if (string.IsNullOrWhiteSpace(rebuiltFile)) {
+        rebuiltFile =
+            Path.Combine(
+                productsDirectory,
+                "products.rebuilt.json");
+      }
+
+      if (!File.Exists(rebuiltFile)) {
+        AppendConsole("[ERROR] Rebuilt products file not found : " + rebuiltFile);
+        return;
+      }
+
+      string productsFile =
+          GetProductsJsonPath();
+
+      DialogResult dialogResult =
+          MessageBox.Show(
+              "Replace products.json with products.rebuilt.json ?" +
+              Environment.NewLine +
+              Environment.NewLine +
+              "A backup will be created before replacement.",
+              "Apply rebuilt products.json",
+              MessageBoxButtons.YesNo,
+              MessageBoxIcon.Question);
+
+      if (dialogResult != DialogResult.Yes) {
+        AppendConsole("[INFO] products.json replacement cancelled.");
+        return;
+      }
+
+      string backupFile =
+          Path.Combine(
+              productsDirectory,
+              "products.backup_" +
+              DateTime.Now.ToString("yyyyMMdd_HHmmss") +
+              ".json");
+
+      if (File.Exists(productsFile)) {
+        File.Copy(
+            productsFile,
+            backupFile,
+            overwrite: true);
+
+        AppendConsole("[OK] Backup created : " + backupFile);
+      }
+
+      File.Copy(
+          rebuiltFile,
+          productsFile,
+          overwrite: true);
+
+      AppendConsole("[OK] products.json replaced by : " + rebuiltFile);
+
+      LoadCatalog();
+      LoadLatestReportStatus();
+      UpdateProductDetails();
+
+      AppendConsole("[OK] Catalog reloaded.");
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to apply rebuilt products.json : " + ex.Message);
     }
   }
 
@@ -818,5 +998,13 @@ public partial class MainForm: Form {
 
   private void btnViewProductChecks_Click(object sender,EventArgs e) {
     ShowSelectedProductChecks();
+  }
+
+  private async void btnRebuildProductsJson_Click(object sender,EventArgs e) {
+    await RebuildProductsJsonFromSiteAsync();
+  }
+
+  private void btnApplyRebuiltProductsJson_Click(object sender,EventArgs e) {
+    ApplyRebuiltProductsJson();
   }
 }

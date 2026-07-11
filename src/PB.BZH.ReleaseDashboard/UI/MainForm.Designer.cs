@@ -36,6 +36,8 @@ partial class MainForm {
     btnViewProductsJson = new Button();
     btnEditProductsJson = new Button();
     btnReloadCatalog = new Button();
+    btnViewProductChecks = new Button();
+    btnRebuildProductsJson = new Button();
     splitProducts = new SplitContainer();
     dgvProducts = new DataGridView();
     grpProductDetails = new GroupBox();
@@ -53,7 +55,7 @@ partial class MainForm {
     lblDetailUpdateJsonUrl = new Label();
     txtDetailUpdateJsonUrl = new RichTextBox();
     txtConsole = new RichTextBox();
-    btnViewProductChecks = new Button();
+    btnApplyRebuiltProductsJson = new Button();
     tlpMain.SuspendLayout();
     pnlHeader.SuspendLayout();
     flpSummary.SuspendLayout();
@@ -84,7 +86,7 @@ partial class MainForm {
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute,90F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,55F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,45F));
-    tlpMain.Size = new Size(1581,760);
+    tlpMain.Size = new Size(1774,760);
     tlpMain.TabIndex = 0;
     // 
     // lblTitle
@@ -95,7 +97,7 @@ partial class MainForm {
     lblTitle.Location = new Point(12,12);
     lblTitle.Margin = new Padding(0,0,0,8);
     lblTitle.Name = "lblTitle";
-    lblTitle.Size = new Size(1557,30);
+    lblTitle.Size = new Size(1750,30);
     lblTitle.TabIndex = 0;
     lblTitle.Text = "PB BZH Release Dashboard";
     // 
@@ -108,7 +110,7 @@ partial class MainForm {
     pnlHeader.Location = new Point(12,50);
     pnlHeader.Margin = new Padding(0);
     pnlHeader.Name = "pnlHeader";
-    pnlHeader.Size = new Size(1557,90);
+    pnlHeader.Size = new Size(1750,90);
     pnlHeader.TabIndex = 1;
     // 
     // flpSummary
@@ -200,10 +202,12 @@ partial class MainForm {
     flpToolbar.Controls.Add(btnEditProductsJson);
     flpToolbar.Controls.Add(btnReloadCatalog);
     flpToolbar.Controls.Add(btnViewProductChecks);
+    flpToolbar.Controls.Add(btnRebuildProductsJson);
+    flpToolbar.Controls.Add(btnApplyRebuiltProductsJson);
     flpToolbar.Dock = DockStyle.Fill;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
-    flpToolbar.Size = new Size(1557,90);
+    flpToolbar.Size = new Size(1750,90);
     flpToolbar.TabIndex = 0;
     // 
     // btnRunReleaseCheck
@@ -338,6 +342,30 @@ partial class MainForm {
     btnReloadCatalog.UseVisualStyleBackColor = true;
     btnReloadCatalog.Click += btnReloadCatalog_Click;
     // 
+    // btnViewProductChecks
+    // 
+    btnViewProductChecks.AutoSize = true;
+    btnViewProductChecks.Location = new Point(1264,0);
+    btnViewProductChecks.Margin = new Padding(0,0,8,8);
+    btnViewProductChecks.Name = "btnViewProductChecks";
+    btnViewProductChecks.Size = new Size(126,34);
+    btnViewProductChecks.TabIndex = 5;
+    btnViewProductChecks.Text = "View product checks";
+    btnViewProductChecks.UseVisualStyleBackColor = true;
+    btnViewProductChecks.Click += btnViewProductChecks_Click;
+    // 
+    // btnRebuildProductsJson
+    // 
+    btnRebuildProductsJson.AutoSize = true;
+    btnRebuildProductsJson.Location = new Point(1398,0);
+    btnRebuildProductsJson.Margin = new Padding(0,0,8,8);
+    btnRebuildProductsJson.Name = "btnRebuildProductsJson";
+    btnRebuildProductsJson.Size = new Size(132,34);
+    btnRebuildProductsJson.TabIndex = 5;
+    btnRebuildProductsJson.Text = "Rebuild products.json";
+    btnRebuildProductsJson.UseVisualStyleBackColor = true;
+    btnRebuildProductsJson.Click += btnRebuildProductsJson_Click;
+    // 
     // splitProducts
     // 
     splitProducts.Dock = DockStyle.Fill;
@@ -352,8 +380,8 @@ partial class MainForm {
     // splitProducts.Panel2
     // 
     splitProducts.Panel2.Controls.Add(grpProductDetails);
-    splitProducts.Size = new Size(1557,326);
-    splitProducts.SplitterDistance = 1045;
+    splitProducts.Size = new Size(1750,326);
+    splitProducts.SplitterDistance = 1174;
     splitProducts.TabIndex = 2;
     // 
     // dgvProducts
@@ -370,7 +398,7 @@ partial class MainForm {
     dgvProducts.ReadOnly = true;
     dgvProducts.RowHeadersVisible = false;
     dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-    dgvProducts.Size = new Size(1045,326);
+    dgvProducts.Size = new Size(1174,326);
     dgvProducts.TabIndex = 0;
     dgvProducts.SelectionChanged += dgvProducts_SelectionChanged;
     // 
@@ -381,7 +409,7 @@ partial class MainForm {
     grpProductDetails.Location = new Point(0,0);
     grpProductDetails.Name = "grpProductDetails";
     grpProductDetails.Padding = new Padding(8);
-    grpProductDetails.Size = new Size(508,326);
+    grpProductDetails.Size = new Size(572,326);
     grpProductDetails.TabIndex = 0;
     grpProductDetails.TabStop = false;
     grpProductDetails.Text = "Product details";
@@ -418,7 +446,7 @@ partial class MainForm {
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
     tlpProductDetails.RowStyles.Add(new RowStyle());
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
-    tlpProductDetails.Size = new Size(492,294);
+    tlpProductDetails.Size = new Size(556,294);
     tlpProductDetails.TabIndex = 0;
     // 
     // lblDetailProduct
@@ -428,7 +456,7 @@ partial class MainForm {
     lblDetailProduct.Font = new Font("Segoe UI",9F,FontStyle.Bold);
     lblDetailProduct.Location = new Point(3,0);
     lblDetailProduct.Name = "lblDetailProduct";
-    lblDetailProduct.Size = new Size(486,15);
+    lblDetailProduct.Size = new Size(550,15);
     lblDetailProduct.TabIndex = 0;
     lblDetailProduct.Text = "Product : -";
     // 
@@ -438,7 +466,7 @@ partial class MainForm {
     lblDetailType.Dock = DockStyle.Fill;
     lblDetailType.Location = new Point(3,15);
     lblDetailType.Name = "lblDetailType";
-    lblDetailType.Size = new Size(486,15);
+    lblDetailType.Size = new Size(550,15);
     lblDetailType.TabIndex = 1;
     lblDetailType.Text = "Type : -";
     // 
@@ -448,7 +476,7 @@ partial class MainForm {
     lblDetailVersion.Dock = DockStyle.Fill;
     lblDetailVersion.Location = new Point(3,30);
     lblDetailVersion.Name = "lblDetailVersion";
-    lblDetailVersion.Size = new Size(486,15);
+    lblDetailVersion.Size = new Size(550,15);
     lblDetailVersion.TabIndex = 2;
     lblDetailVersion.Text = "Version : -";
     // 
@@ -459,7 +487,7 @@ partial class MainForm {
     lblDetailStatus.Location = new Point(3,45);
     lblDetailStatus.Margin = new Padding(3,0,3,8);
     lblDetailStatus.Name = "lblDetailStatus";
-    lblDetailStatus.Size = new Size(486,15);
+    lblDetailStatus.Size = new Size(550,15);
     lblDetailStatus.TabIndex = 3;
     lblDetailStatus.Text = "Status : -";
     // 
@@ -469,7 +497,7 @@ partial class MainForm {
     lblDetailDownloadUrl.Dock = DockStyle.Fill;
     lblDetailDownloadUrl.Location = new Point(3,68);
     lblDetailDownloadUrl.Name = "lblDetailDownloadUrl";
-    lblDetailDownloadUrl.Size = new Size(486,15);
+    lblDetailDownloadUrl.Size = new Size(550,15);
     lblDetailDownloadUrl.TabIndex = 4;
     lblDetailDownloadUrl.Text = "Download URL";
     // 
@@ -482,7 +510,7 @@ partial class MainForm {
     txtDetailDownloadUrl.Name = "txtDetailDownloadUrl";
     txtDetailDownloadUrl.ReadOnly = true;
     txtDetailDownloadUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailDownloadUrl.Size = new Size(486,36);
+    txtDetailDownloadUrl.Size = new Size(550,36);
     txtDetailDownloadUrl.TabIndex = 5;
     txtDetailDownloadUrl.Text = "";
     txtDetailDownloadUrl.WordWrap = false;
@@ -494,7 +522,7 @@ partial class MainForm {
     lblDetailArtifactUrl.Dock = DockStyle.Fill;
     lblDetailArtifactUrl.Location = new Point(3,125);
     lblDetailArtifactUrl.Name = "lblDetailArtifactUrl";
-    lblDetailArtifactUrl.Size = new Size(486,15);
+    lblDetailArtifactUrl.Size = new Size(550,15);
     lblDetailArtifactUrl.TabIndex = 6;
     lblDetailArtifactUrl.Text = "Artifact URL";
     // 
@@ -507,7 +535,7 @@ partial class MainForm {
     txtDetailArtifactUrl.Name = "txtDetailArtifactUrl";
     txtDetailArtifactUrl.ReadOnly = true;
     txtDetailArtifactUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailArtifactUrl.Size = new Size(486,36);
+    txtDetailArtifactUrl.Size = new Size(550,36);
     txtDetailArtifactUrl.TabIndex = 7;
     txtDetailArtifactUrl.Text = "";
     txtDetailArtifactUrl.WordWrap = false;
@@ -519,7 +547,7 @@ partial class MainForm {
     lblDetailSha256Url.Dock = DockStyle.Fill;
     lblDetailSha256Url.Location = new Point(3,182);
     lblDetailSha256Url.Name = "lblDetailSha256Url";
-    lblDetailSha256Url.Size = new Size(486,15);
+    lblDetailSha256Url.Size = new Size(550,15);
     lblDetailSha256Url.TabIndex = 8;
     lblDetailSha256Url.Text = "SHA256 URL";
     // 
@@ -532,7 +560,7 @@ partial class MainForm {
     txtDetailSha256Url.Name = "txtDetailSha256Url";
     txtDetailSha256Url.ReadOnly = true;
     txtDetailSha256Url.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailSha256Url.Size = new Size(486,36);
+    txtDetailSha256Url.Size = new Size(550,36);
     txtDetailSha256Url.TabIndex = 9;
     txtDetailSha256Url.Text = "";
     txtDetailSha256Url.WordWrap = false;
@@ -544,7 +572,7 @@ partial class MainForm {
     lblDetailUpdateJsonUrl.Dock = DockStyle.Fill;
     lblDetailUpdateJsonUrl.Location = new Point(3,239);
     lblDetailUpdateJsonUrl.Name = "lblDetailUpdateJsonUrl";
-    lblDetailUpdateJsonUrl.Size = new Size(486,15);
+    lblDetailUpdateJsonUrl.Size = new Size(550,15);
     lblDetailUpdateJsonUrl.TabIndex = 10;
     lblDetailUpdateJsonUrl.Text = "Update JSON URL";
     // 
@@ -557,7 +585,7 @@ partial class MainForm {
     txtDetailUpdateJsonUrl.Name = "txtDetailUpdateJsonUrl";
     txtDetailUpdateJsonUrl.ReadOnly = true;
     txtDetailUpdateJsonUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailUpdateJsonUrl.Size = new Size(486,36);
+    txtDetailUpdateJsonUrl.Size = new Size(550,36);
     txtDetailUpdateJsonUrl.TabIndex = 11;
     txtDetailUpdateJsonUrl.Text = "";
     txtDetailUpdateJsonUrl.WordWrap = false;
@@ -573,29 +601,29 @@ partial class MainForm {
     txtConsole.Margin = new Padding(0);
     txtConsole.Name = "txtConsole";
     txtConsole.ReadOnly = true;
-    txtConsole.Size = new Size(1557,274);
+    txtConsole.Size = new Size(1750,274);
     txtConsole.TabIndex = 3;
     txtConsole.Text = "";
     txtConsole.WordWrap = false;
     txtConsole.LinkClicked += txtConsole_LinkClicked;
     // 
-    // btnViewProductChecks
+    // btnApplyRebuiltProductsJson
     // 
-    btnViewProductChecks.AutoSize = true;
-    btnViewProductChecks.Location = new Point(1264,0);
-    btnViewProductChecks.Margin = new Padding(0,0,8,8);
-    btnViewProductChecks.Name = "btnViewProductChecks";
-    btnViewProductChecks.Size = new Size(126,34);
-    btnViewProductChecks.TabIndex = 5;
-    btnViewProductChecks.Text = "View product checks";
-    btnViewProductChecks.UseVisualStyleBackColor = true;
-    btnViewProductChecks.Click += btnViewProductChecks_Click;
+    btnApplyRebuiltProductsJson.AutoSize = true;
+    btnApplyRebuiltProductsJson.Location = new Point(1538,0);
+    btnApplyRebuiltProductsJson.Margin = new Padding(0,0,8,8);
+    btnApplyRebuiltProductsJson.Name = "btnApplyRebuiltProductsJson";
+    btnApplyRebuiltProductsJson.Size = new Size(160,34);
+    btnApplyRebuiltProductsJson.TabIndex = 5;
+    btnApplyRebuiltProductsJson.Text = "Apply rebuilt products.json";
+    btnApplyRebuiltProductsJson.UseVisualStyleBackColor = true;
+    btnApplyRebuiltProductsJson.Click += btnApplyRebuiltProductsJson_Click;
     // 
     // MainForm
     // 
     AutoScaleDimensions = new SizeF(7F,15F);
     AutoScaleMode = AutoScaleMode.Font;
-    ClientSize = new Size(1581,760);
+    ClientSize = new Size(1774,760);
     Controls.Add(tlpMain);
     MinimumSize = new Size(950,600);
     Name = "MainForm";
@@ -662,4 +690,6 @@ partial class MainForm {
   private Button btnEditProductsJson;
   private Button btnReloadCatalog;
   private Button btnViewProductChecks;
+  private Button btnRebuildProductsJson;
+  private Button btnApplyRebuiltProductsJson;
 }
