@@ -24,12 +24,8 @@ public partial class MainForm: Form {
     ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
     ThemeManager.StyleDarkButtons(this);
     ThemeManager.ApplyDarkTheme(this);
-    lblRoot.ForeColor = Color.WhiteSmoke;
-    lblLastCheck.ForeColor = Color.WhiteSmoke;
-    lblSummaryOk.ForeColor = Color.LightGreen;
-    lblSummaryInfo.ForeColor = Color.DeepSkyBlue;
-    lblSummaryWarnings.ForeColor = Color.Orange;
-    lblSummaryErrors.ForeColor = Color.OrangeRed;
+    ProductGridViewConfigurator.Configure(dgvProducts);
+    ProductGridViewConfigurator.ApplyLightGridTheme(dgvProducts);
     ReleaseSummaryPresenter.Clear(
       lblLastCheck,
       lblSummaryOk,
@@ -37,6 +33,12 @@ public partial class MainForm: Form {
       lblSummaryWarnings,
       lblSummaryErrors);
     ProductGridViewConfigurator.Configure(dgvProducts);
+    lblRoot.ForeColor = Color.WhiteSmoke;
+    lblLastCheck.ForeColor = Color.WhiteSmoke;
+    lblSummaryOk.ForeColor = Color.LightGreen;
+    lblSummaryInfo.ForeColor = Color.DeepSkyBlue;
+    lblSummaryWarnings.ForeColor = Color.Orange;
+    lblSummaryErrors.ForeColor = Color.OrangeRed;
     LoadCatalog();
   }
 

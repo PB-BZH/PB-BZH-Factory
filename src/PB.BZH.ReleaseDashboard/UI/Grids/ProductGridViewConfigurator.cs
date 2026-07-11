@@ -142,4 +142,64 @@ public static class ProductGridViewConfigurator {
         break;
     }
   }
+
+  public static void ApplyLightGridTheme(DataGridView grid) {
+    if (grid == null)
+      throw new ArgumentNullException(nameof(grid));
+
+    grid.EnableHeadersVisualStyles = true;
+
+    grid.BackgroundColor = Color.White;
+    grid.GridColor = Color.Silver;
+    grid.BorderStyle = BorderStyle.FixedSingle;
+
+    grid.DefaultCellStyle.BackColor = Color.White;
+    grid.DefaultCellStyle.ForeColor = Color.Black;
+    grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0,122,204);
+    grid.DefaultCellStyle.SelectionForeColor = Color.White;
+
+    grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245,248,252);
+    grid.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+
+    grid.CellFormatting -= Grid_CellFormatting;
+    grid.CellFormatting += Grid_CellFormatting;
+  }
+
+  private static void Grid_CellFormatting(
+      object? sender,
+      DataGridViewCellFormattingEventArgs e) {
+    if (sender is not DataGridView grid)
+      return;
+
+    if (e.RowIndex < 0)
+      return;
+
+    if (grid.Columns[e.ColumnIndex].Name != ColStatus)
+      return;
+
+    string status =
+        Convert.ToString(e.Value) ?? string.Empty;
+
+    switch (status.ToUpperInvariant()) {
+      case "OK":
+        e.CellStyle.BackColor = Color.FromArgb(210,245,210);
+        e.CellStyle.ForeColor = Color.DarkGreen;
+        break;
+
+      case "WARN":
+        e.CellStyle.BackColor = Color.FromArgb(95,75,25);
+        e.CellStyle.ForeColor = Color.FromArgb(255,210,90);
+        break;
+
+      case "FAIL":
+        e.CellStyle.BackColor = Color.FromArgb(95,35,35);
+        e.CellStyle.ForeColor = Color.FromArgb(255,120,120);
+        break;
+
+      default:
+        e.CellStyle.BackColor = Color.FromArgb(37,37,38);
+        e.CellStyle.ForeColor = Color.Silver;
+        break;
+    }
+  }
 }
