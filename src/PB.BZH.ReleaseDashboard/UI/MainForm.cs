@@ -7,6 +7,7 @@ namespace PB.BZH.ReleaseDashboard.UI;
 
 public partial class MainForm: Form {
   private readonly ProductCatalogService _catalogService = new();
+  private readonly ReleaseReportService _reportService = new();
 
   private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
@@ -42,6 +43,7 @@ public partial class MainForm: Form {
 
       AppendConsole("[OK] products.json loaded.");
       AppendConsole(productsFile);
+      LoadLatestReportStatus();
     }
     catch (Exception ex) {
       AppendConsole("[ERROR] " + ex.Message);
@@ -81,6 +83,8 @@ public partial class MainForm: Form {
     await RunScriptAsync(
         "release\\check-release.ps1",
         "-Report");
+
+    LoadLatestReportStatus();
   }
 
   private async void btnOpenLastReport_Click(object sender,EventArgs e) {
@@ -198,6 +202,76 @@ public partial class MainForm: Form {
     }
   }
 
+  private void LoadLatestReportStatus() {
+    try {
+      if (_catalog == null || _rows.Count == 0)
+        return;
+
+      ReleaseCheckReport? report =
+          _reportService.LoadLatestReport(_factoryRoot);
+
+      if (report == null) {
+        foreach (ProductGridRow row in _rows) {
+          row.Status = "UNKNOWN";
+          row.LastCheck = string.Empty;
+        }
+
+        dgvProducts.Refresh();
+        ApplyGridRowColors();
+        AppendConsole("[INFO] No release report found yet.");
+        return;
+      }
+
+      foreach (ProductGridRow row in _rows) {
+        row.Status =
+            _reportService.GetProductStatus(
+                report,
+                row.Id,
+                row.DisplayName);
+
+        row.LastCheck =
+            report.GeneratedAtLocal;
+      }
+
+      dgvProducts.Refresh();
+      ApplyGridRowColors();
+
+      AppendConsole("[OK] Latest release report loaded : " + report.GeneratedAtLocal);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to load latest report : " + ex.Message);
+    }
+  }
+
+  private void ApplyGridRowColors() {
+    foreach (DataGridViewRow gridRow in dgvProducts.Rows) {
+      if (gridRow.DataBoundItem is not ProductGridRow row)
+        continue;
+
+      switch (row.Status.ToUpperInvariant()) {
+        case "OK":
+          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(210,245,210);
+          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkGreen;
+          break;
+
+        case "WARN":
+          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(255,240,190);
+          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkOrange;
+          break;
+
+        case "FAIL":
+          gridRow.Cells["colStatus"].Style.BackColor = Color.FromArgb(255,210,210);
+          gridRow.Cells["colStatus"].Style.ForeColor = Color.DarkRed;
+          break;
+
+        default:
+          gridRow.Cells["colStatus"].Style.BackColor = Color.White;
+          gridRow.Cells["colStatus"].Style.ForeColor = Color.Gray;
+          break;
+      }
+    }
+  }
+
   private void SetButtonsEnabled(bool enabled) {
     btnRunReleaseCheck.Enabled = enabled;
     btnOpenLastReport.Enabled = enabled;
@@ -235,6 +309,8 @@ public partial class MainForm: Form {
     public string DisplayName { get; set; } = string.Empty;
     public string Type { get; set; } = string.Empty;
     public string Version { get; set; } = string.Empty;
+    public string Status { get; set; } = "UNKNOWN";
+    public string LastCheck { get; set; } = string.Empty;
     public string ArtifactFile { get; set; } = string.Empty;
     public string LocalCheck { get; set; } = string.Empty;
     public string DownloadUrl { get; set; } = string.Empty;
@@ -248,6 +324,8 @@ public partial class MainForm: Form {
         DisplayName = product.DisplayName,
         Type = product.Type.ToUpperInvariant(),
         Version = product.Version,
+        Status = "UNKNOWN",
+        LastCheck = string.Empty,
         ArtifactFile = product.ArtifactFile,
         LocalCheck = product.LocalCheck,
         DownloadUrl = product.GetDownloadUrl(softwaresUrl),
