@@ -1,0 +1,3 @@
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\publish\PB.BZH.ReleaseDashboard\PB.BZH.ReleaseDashboard.pdb
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\publish\PB.BZH.ReleaseDashboard\PB.BZH.Help.Library.pdb
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\publish\PB.BZH.ReleaseDashboard\PB.BZH.ReleaseDashboard.exe
