@@ -40,3 +40,4 @@ G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\PB.BZH.ReleaseDashboar
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.pdb
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.genruntimeconfig.cache
 G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\ref\PB.BZH.ReleaseDashboard.dll
+G:\OneDrive\@33 - VS_PRO_2026\source\repos\PB-BZH-Factory\PB.BZH.ReleaseDashboard\obj\Debug\net10.0-windows\PB.BZH.ReleaseDashboard.Properties.Resources.resources

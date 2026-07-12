@@ -5,6 +5,7 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using PB.BZH.Help.Library.UI.Theming;
 using PB.BZH.ReleaseDashboard.Core.Models;
+using PB.BZH.ReleaseDashboard.Core.Profiles;
 using PB.BZH.ReleaseDashboard.Core.Services;
 using PB.BZH.ReleaseDashboard.UI.Console;
 using PB.BZH.ReleaseDashboard.UI.Details;
@@ -23,6 +24,7 @@ public partial class MainForm: Form {
   private readonly WorkspaceService _workspaceService = new();
   private readonly ReleaseCheckService _releaseCheckService = new();
   private readonly ReleaseReportWriter _releaseReportWriter = new();
+  private readonly DashboardProfileManager _profile = new();
 
   private DashboardSettings _settings = new();
   private WorkspaceSettings _workspace = new();
@@ -1178,5 +1180,13 @@ public partial class MainForm: Form {
 
   private void mnuConfigureWorkspace_Click(object sender,EventArgs e) {
     ConfigureWorkspaceAction();
+  }
+
+  private async void mnuCheckForUpdates_Click(object? sender,EventArgs e) {
+    HelpHelper.mnuCheckForUpdates(this,_profile);
+  }
+
+  private void mnuAbout_Click(object? sender,EventArgs e) {
+    HelpHelper.mnuAbout(this,_profile);
   }
 }
