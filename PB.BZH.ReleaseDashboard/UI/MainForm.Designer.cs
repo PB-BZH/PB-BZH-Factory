@@ -99,7 +99,7 @@ partial class MainForm {
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Absolute,125F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,55F));
     tlpMain.RowStyles.Add(new RowStyle(SizeType.Percent,45F));
-    tlpMain.Size = new Size(1213,736);
+    tlpMain.Size = new Size(1647,736);
     tlpMain.TabIndex = 0;
     // 
     // lblTitle
@@ -110,7 +110,7 @@ partial class MainForm {
     lblTitle.Location = new Point(12,12);
     lblTitle.Margin = new Padding(0,0,0,8);
     lblTitle.Name = "lblTitle";
-    lblTitle.Size = new Size(1189,30);
+    lblTitle.Size = new Size(1623,30);
     lblTitle.TabIndex = 0;
     lblTitle.Text = "PB BZH Release Dashboard";
     // 
@@ -123,7 +123,7 @@ partial class MainForm {
     pnlHeader.Location = new Point(12,50);
     pnlHeader.Margin = new Padding(0);
     pnlHeader.Name = "pnlHeader";
-    pnlHeader.Size = new Size(1189,125);
+    pnlHeader.Size = new Size(1623,125);
     pnlHeader.TabIndex = 1;
     // 
     // lblRoot
@@ -145,7 +145,7 @@ partial class MainForm {
     flpToolbar.Dock = DockStyle.Top;
     flpToolbar.Location = new Point(0,0);
     flpToolbar.Name = "flpToolbar";
-    flpToolbar.Size = new Size(1189,46);
+    flpToolbar.Size = new Size(1623,46);
     flpToolbar.TabIndex = 0;
     // 
     // btnRunReleaseCheck
@@ -262,15 +262,15 @@ partial class MainForm {
     // splitProducts.Panel2
     // 
     splitProducts.Panel2.Controls.Add(grpProductDetails);
-    splitProducts.Size = new Size(1189,293);
-    splitProducts.SplitterDistance = 797;
+    splitProducts.Size = new Size(1623,293);
+    splitProducts.SplitterDistance = 1070;
     splitProducts.TabIndex = 2;
     // 
     // dgvProducts
     // 
     dgvProducts.AllowUserToAddRows = false;
     dgvProducts.AllowUserToDeleteRows = false;
-    dgvProducts.BackgroundColor = SystemColors.Window;
+    dgvProducts.BackgroundColor = Color.LightGray;
     dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
     dgvProducts.Dock = DockStyle.Fill;
     dgvProducts.Location = new Point(0,0);
@@ -280,7 +280,7 @@ partial class MainForm {
     dgvProducts.ReadOnly = true;
     dgvProducts.RowHeadersVisible = false;
     dgvProducts.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-    dgvProducts.Size = new Size(797,293);
+    dgvProducts.Size = new Size(1070,293);
     dgvProducts.TabIndex = 0;
     dgvProducts.SelectionChanged += dgvProducts_SelectionChanged;
     // 
@@ -291,7 +291,7 @@ partial class MainForm {
     grpProductDetails.Location = new Point(0,0);
     grpProductDetails.Name = "grpProductDetails";
     grpProductDetails.Padding = new Padding(8);
-    grpProductDetails.Size = new Size(388,293);
+    grpProductDetails.Size = new Size(329,293);
     grpProductDetails.TabIndex = 0;
     grpProductDetails.TabStop = false;
     grpProductDetails.Text = "Product details";
@@ -328,7 +328,7 @@ partial class MainForm {
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
     tlpProductDetails.RowStyles.Add(new RowStyle());
     tlpProductDetails.RowStyles.Add(new RowStyle(SizeType.Absolute,42F));
-    tlpProductDetails.Size = new Size(372,261);
+    tlpProductDetails.Size = new Size(313,261);
     tlpProductDetails.TabIndex = 0;
     // 
     // lblDetailProduct
@@ -338,7 +338,7 @@ partial class MainForm {
     lblDetailProduct.Font = new Font("Segoe UI",9F,FontStyle.Bold);
     lblDetailProduct.Location = new Point(3,0);
     lblDetailProduct.Name = "lblDetailProduct";
-    lblDetailProduct.Size = new Size(366,15);
+    lblDetailProduct.Size = new Size(307,15);
     lblDetailProduct.TabIndex = 0;
     lblDetailProduct.Text = "Product : -";
     // 
@@ -348,7 +348,7 @@ partial class MainForm {
     lblDetailType.Dock = DockStyle.Fill;
     lblDetailType.Location = new Point(3,15);
     lblDetailType.Name = "lblDetailType";
-    lblDetailType.Size = new Size(366,15);
+    lblDetailType.Size = new Size(307,15);
     lblDetailType.TabIndex = 1;
     lblDetailType.Text = "Type : -";
     // 
@@ -358,7 +358,7 @@ partial class MainForm {
     lblDetailVersion.Dock = DockStyle.Fill;
     lblDetailVersion.Location = new Point(3,30);
     lblDetailVersion.Name = "lblDetailVersion";
-    lblDetailVersion.Size = new Size(366,15);
+    lblDetailVersion.Size = new Size(307,15);
     lblDetailVersion.TabIndex = 2;
     lblDetailVersion.Text = "Version : -";
     // 
@@ -369,7 +369,7 @@ partial class MainForm {
     lblDetailStatus.Location = new Point(3,45);
     lblDetailStatus.Margin = new Padding(3,0,3,8);
     lblDetailStatus.Name = "lblDetailStatus";
-    lblDetailStatus.Size = new Size(366,15);
+    lblDetailStatus.Size = new Size(307,15);
     lblDetailStatus.TabIndex = 3;
     lblDetailStatus.Text = "Status : -";
     // 
@@ -379,7 +379,7 @@ partial class MainForm {
     lblDetailDownloadUrl.Dock = DockStyle.Fill;
     lblDetailDownloadUrl.Location = new Point(3,68);
     lblDetailDownloadUrl.Name = "lblDetailDownloadUrl";
-    lblDetailDownloadUrl.Size = new Size(366,15);
+    lblDetailDownloadUrl.Size = new Size(307,15);
     lblDetailDownloadUrl.TabIndex = 4;
     lblDetailDownloadUrl.Text = "Download URL";
     // 
@@ -392,7 +392,7 @@ partial class MainForm {
     txtDetailDownloadUrl.Name = "txtDetailDownloadUrl";
     txtDetailDownloadUrl.ReadOnly = true;
     txtDetailDownloadUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailDownloadUrl.Size = new Size(366,36);
+    txtDetailDownloadUrl.Size = new Size(307,36);
     txtDetailDownloadUrl.TabIndex = 5;
     txtDetailDownloadUrl.Text = "";
     txtDetailDownloadUrl.WordWrap = false;
@@ -404,7 +404,7 @@ partial class MainForm {
     lblDetailArtifactUrl.Dock = DockStyle.Fill;
     lblDetailArtifactUrl.Location = new Point(3,125);
     lblDetailArtifactUrl.Name = "lblDetailArtifactUrl";
-    lblDetailArtifactUrl.Size = new Size(366,15);
+    lblDetailArtifactUrl.Size = new Size(307,15);
     lblDetailArtifactUrl.TabIndex = 6;
     lblDetailArtifactUrl.Text = "Artifact URL";
     // 
@@ -417,7 +417,7 @@ partial class MainForm {
     txtDetailArtifactUrl.Name = "txtDetailArtifactUrl";
     txtDetailArtifactUrl.ReadOnly = true;
     txtDetailArtifactUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailArtifactUrl.Size = new Size(366,36);
+    txtDetailArtifactUrl.Size = new Size(307,36);
     txtDetailArtifactUrl.TabIndex = 7;
     txtDetailArtifactUrl.Text = "";
     txtDetailArtifactUrl.WordWrap = false;
@@ -429,7 +429,7 @@ partial class MainForm {
     lblDetailSha256Url.Dock = DockStyle.Fill;
     lblDetailSha256Url.Location = new Point(3,182);
     lblDetailSha256Url.Name = "lblDetailSha256Url";
-    lblDetailSha256Url.Size = new Size(366,15);
+    lblDetailSha256Url.Size = new Size(307,15);
     lblDetailSha256Url.TabIndex = 8;
     lblDetailSha256Url.Text = "SHA256 URL";
     // 
@@ -442,7 +442,7 @@ partial class MainForm {
     txtDetailSha256Url.Name = "txtDetailSha256Url";
     txtDetailSha256Url.ReadOnly = true;
     txtDetailSha256Url.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailSha256Url.Size = new Size(366,36);
+    txtDetailSha256Url.Size = new Size(307,36);
     txtDetailSha256Url.TabIndex = 9;
     txtDetailSha256Url.Text = "";
     txtDetailSha256Url.WordWrap = false;
@@ -454,7 +454,7 @@ partial class MainForm {
     lblDetailUpdateJsonUrl.Dock = DockStyle.Fill;
     lblDetailUpdateJsonUrl.Location = new Point(3,239);
     lblDetailUpdateJsonUrl.Name = "lblDetailUpdateJsonUrl";
-    lblDetailUpdateJsonUrl.Size = new Size(366,15);
+    lblDetailUpdateJsonUrl.Size = new Size(307,15);
     lblDetailUpdateJsonUrl.TabIndex = 10;
     lblDetailUpdateJsonUrl.Text = "Update JSON URL";
     // 
@@ -467,7 +467,7 @@ partial class MainForm {
     txtDetailUpdateJsonUrl.Name = "txtDetailUpdateJsonUrl";
     txtDetailUpdateJsonUrl.ReadOnly = true;
     txtDetailUpdateJsonUrl.ScrollBars = RichTextBoxScrollBars.Horizontal;
-    txtDetailUpdateJsonUrl.Size = new Size(366,36);
+    txtDetailUpdateJsonUrl.Size = new Size(307,36);
     txtDetailUpdateJsonUrl.TabIndex = 11;
     txtDetailUpdateJsonUrl.Text = "";
     txtDetailUpdateJsonUrl.WordWrap = false;
@@ -483,7 +483,7 @@ partial class MainForm {
     txtConsole.Margin = new Padding(0);
     txtConsole.Name = "txtConsole";
     txtConsole.ReadOnly = true;
-    txtConsole.Size = new Size(1189,248);
+    txtConsole.Size = new Size(1623,248);
     txtConsole.TabIndex = 3;
     txtConsole.Text = "";
     txtConsole.WordWrap = false;
@@ -494,7 +494,7 @@ partial class MainForm {
     menuStrip1.Items.AddRange(new ToolStripItem[] { mnuFile,mnuRelease,mnuProduct,mnuCatalog,mnuHelp });
     menuStrip1.Location = new Point(0,0);
     menuStrip1.Name = "menuStrip1";
-    menuStrip1.Size = new Size(1213,24);
+    menuStrip1.Size = new Size(1647,24);
     menuStrip1.TabIndex = 1;
     menuStrip1.Text = "menuStrip1";
     // 
@@ -654,7 +654,7 @@ partial class MainForm {
     // 
     AutoScaleDimensions = new SizeF(7F,15F);
     AutoScaleMode = AutoScaleMode.Font;
-    ClientSize = new Size(1213,760);
+    ClientSize = new Size(1647,760);
     Controls.Add(tlpMain);
     Controls.Add(menuStrip1);
     MainMenuStrip = menuStrip1;

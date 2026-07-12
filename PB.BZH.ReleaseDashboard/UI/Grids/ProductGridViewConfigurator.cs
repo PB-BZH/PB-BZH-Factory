@@ -13,68 +13,70 @@ public static class ProductGridViewConfigurator {
     if (grid == null)
       throw new ArgumentNullException(nameof(grid));
 
-    grid.SuspendLayout();
+    grid.AutoGenerateColumns = false;
+    grid.Columns.Clear();
 
-    try {
-      grid.Columns.Clear();
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColDisplayName,
+      HeaderText = "Product",
+      DataPropertyName = "DisplayName",
+      Width = 260
+    });
 
-      grid.AutoGenerateColumns = false;
-      grid.AllowUserToAddRows = false;
-      grid.AllowUserToDeleteRows = false;
-      grid.ReadOnly = true;
-      grid.MultiSelect = false;
-      grid.RowHeadersVisible = false;
-      grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-      grid.BackgroundColor = SystemColors.Window;
-      grid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColType,
+      HeaderText = "Type",
+      DataPropertyName = "Type",
+      Width = 80
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColDisplayName,
-          "Product",
-          "DisplayName",
-          220,
-          DataGridViewAutoSizeColumnMode.Fill));
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColVersion,
+      HeaderText = "Version",
+      DataPropertyName = "Version",
+      Width = 90
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColType,
-          "Type",
-          "Type",
-          80));
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColStatus,
+      HeaderText = "Status",
+      DataPropertyName = "Status",
+      Width = 90
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColVersion,
-          "Version",
-          "Version",
-          90));
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColLastCheck,
+      HeaderText = "Last Check",
+      DataPropertyName = "LastCheck",
+      Width = 160
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColStatus,
-          "Status",
-          "Status",
-          90));
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColArtifactFile,
+      HeaderText = "Artifact",
+      DataPropertyName = "ArtifactFile",
+      Width = 260
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColLastCheck,
-          "Last Check",
-          "LastCheck",
-          160));
+    grid.Columns.Add(new DataGridViewTextBoxColumn {
+      Name = ColLocalCheck,
+      HeaderText = "Local check",
+      DataPropertyName = "LocalCheck",
+      Width = 120
+    });
 
-      grid.Columns.Add(CreateTextColumn(
-          ColArtifactFile,
-          "Artifact",
-          "ArtifactFile",
-          280));
-
-      grid.Columns.Add(CreateTextColumn(
-          ColLocalCheck,
-          "Local check",
-          "LocalCheck",
-          110));
-    }
-    finally {
-      grid.ResumeLayout();
-    }
+    ApplyLightGridTheme(grid);
+    AttachStatusFormatting(grid);
   }
+
+  public static void AttachStatusFormatting(DataGridView grid) {
+    if (grid == null)
+      throw new ArgumentNullException(nameof(grid));
+
+    grid.CellFormatting -= Grid_CellFormatting;
+    grid.CellFormatting += Grid_CellFormatting;
+  }
+
 
   public static void ApplyStatusColors(DataGridView grid) {
     if (grid == null)
@@ -147,64 +149,105 @@ public static class ProductGridViewConfigurator {
     if (grid == null)
       throw new ArgumentNullException(nameof(grid));
 
-    grid.EnableHeadersVisualStyles = true;
+    Color gridBackColor = Color.Black;
+    Color alternateBackColor = Color.Black;
+    Color headerBackColor = Color.Black;
+    Color textColor = Color.White;
+    Color selectionBackColor = Color.FromArgb(0,120,215);
 
-    grid.BackgroundColor = Color.White;
-    grid.GridColor = Color.Silver;
+    grid.EnableHeadersVisualStyles = false;
+
+    grid.BackgroundColor = gridBackColor;
+    grid.GridColor = Color.FromArgb(120,120,120);
     grid.BorderStyle = BorderStyle.FixedSingle;
 
-    grid.DefaultCellStyle.BackColor = Color.White;
-    grid.DefaultCellStyle.ForeColor = Color.Black;
-    grid.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0,122,204);
+    grid.DefaultCellStyle.BackColor = gridBackColor;
+    grid.DefaultCellStyle.ForeColor = textColor;
+    grid.DefaultCellStyle.SelectionBackColor = selectionBackColor;
     grid.DefaultCellStyle.SelectionForeColor = Color.White;
 
-    grid.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245,248,252);
-    grid.AlternatingRowsDefaultCellStyle.ForeColor = Color.Black;
+    grid.RowsDefaultCellStyle.BackColor = gridBackColor;
+    grid.RowsDefaultCellStyle.ForeColor = textColor;
+    grid.RowsDefaultCellStyle.SelectionBackColor = selectionBackColor;
+    grid.RowsDefaultCellStyle.SelectionForeColor = Color.White;
 
-    grid.CellFormatting -= Grid_CellFormatting;
-    grid.CellFormatting += Grid_CellFormatting;
+    grid.AlternatingRowsDefaultCellStyle.BackColor = alternateBackColor;
+    grid.AlternatingRowsDefaultCellStyle.ForeColor = textColor;
+    grid.AlternatingRowsDefaultCellStyle.SelectionBackColor = selectionBackColor;
+    grid.AlternatingRowsDefaultCellStyle.SelectionForeColor = Color.White;
+
+    grid.ColumnHeadersDefaultCellStyle.BackColor = headerBackColor;
+    grid.ColumnHeadersDefaultCellStyle.ForeColor = textColor;
+    grid.ColumnHeadersDefaultCellStyle.SelectionBackColor = headerBackColor;
+    grid.ColumnHeadersDefaultCellStyle.SelectionForeColor = textColor;
+
+    grid.RowHeadersDefaultCellStyle.BackColor = headerBackColor;
+    grid.RowHeadersDefaultCellStyle.ForeColor = textColor;
+    grid.RowHeadersDefaultCellStyle.SelectionBackColor = headerBackColor;
+    grid.RowHeadersDefaultCellStyle.SelectionForeColor = textColor;
+
+    foreach (DataGridViewColumn column in grid.Columns) {
+      column.HeaderCell.Style.BackColor = headerBackColor;
+      column.HeaderCell.Style.ForeColor = textColor;
+      column.HeaderCell.Style.SelectionBackColor = headerBackColor;
+      column.HeaderCell.Style.SelectionForeColor = textColor;
+    }
   }
 
-  private static void Grid_CellFormatting(
-      object? sender,
-      DataGridViewCellFormattingEventArgs e) {
+  private static void Grid_CellFormatting(object? sender,DataGridViewCellFormattingEventArgs e) {
     if (sender is not DataGridView grid)
       return;
 
-    if (e.RowIndex < 0)
+    if (e.RowIndex < 0 || e.ColumnIndex < 0)
       return;
 
-    if (grid.Columns[e.ColumnIndex].Name != ColStatus)
+    DataGridViewColumn column =
+        grid.Columns[e.ColumnIndex];
+
+    bool isStatusColumn =
+        string.Equals(column.Name,ColStatus,StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(column.DataPropertyName,"Status",StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(column.HeaderText,"Status",StringComparison.OrdinalIgnoreCase);
+
+    if (!isStatusColumn)
       return;
 
     string status =
-        Convert.ToString(e.Value) ?? string.Empty;
+        Convert.ToString(e.Value)?.Trim().ToUpperInvariant() ?? string.Empty;
 
-    switch (status.ToUpperInvariant()) {
+    switch (status) {
       case "OK":
-        e.CellStyle.BackColor = Color.FromArgb(210,245,210);
+        e.CellStyle.BackColor = Color.FromArgb(200,245,200);
         e.CellStyle.ForeColor = Color.DarkGreen;
+        e.CellStyle.SelectionBackColor = Color.FromArgb(200,245,200);
+        e.CellStyle.SelectionForeColor = Color.DarkGreen;
         break;
 
       case "WARN":
-        e.CellStyle.BackColor = Color.FromArgb(95,75,25);
-        e.CellStyle.ForeColor = Color.FromArgb(255,210,90);
+      case "WARNING":
+        e.CellStyle.BackColor = Color.FromArgb(255,235,170);
+        e.CellStyle.ForeColor = Color.DarkOrange;
+        e.CellStyle.SelectionBackColor = Color.FromArgb(255,235,170);
+        e.CellStyle.SelectionForeColor = Color.DarkOrange;
         break;
 
       case "FAIL":
-        e.CellStyle.BackColor = Color.FromArgb(95,35,35);
-        e.CellStyle.ForeColor = Color.FromArgb(255,120,120);
+      case "ERROR":
+        e.CellStyle.BackColor = Color.FromArgb(255,200,200);
+        e.CellStyle.ForeColor = Color.DarkRed;
+        e.CellStyle.SelectionBackColor = Color.FromArgb(255,200,200);
+        e.CellStyle.SelectionForeColor = Color.DarkRed;
         break;
 
       case "NOT CHECKED":
+      case "UNKNOWN":
         e.CellStyle.BackColor = Color.FromArgb(230,230,230);
         e.CellStyle.ForeColor = Color.DimGray;
-        break;
-
-      default:
-        e.CellStyle.BackColor = Color.FromArgb(37,37,38);
-        e.CellStyle.ForeColor = Color.Silver;
+        e.CellStyle.SelectionBackColor = Color.FromArgb(230,230,230);
+        e.CellStyle.SelectionForeColor = Color.DimGray;
         break;
     }
+
+    e.FormattingApplied = true;
   }
 }

@@ -37,19 +37,18 @@ public partial class MainForm: Form {
     InitializeWorkspace();
 
     ConsoleContextMenuConfigurator.Configure(txtConsole);
-    ThemeManager.ApplyDarkTitleBar(this);
-    ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
-    ThemeManager.StyleDarkButtons(this);
-    ThemeManager.ApplyDarkTheme(this);
-    ProductGridViewConfigurator.Configure(dgvProducts);
-    ProductGridViewConfigurator.ApplyLightGridTheme(dgvProducts);
     ReleaseSummaryPresenter.Clear(
       lblLastCheck,
       lblSummaryOk,
       lblSummaryInfo,
       lblSummaryWarnings,
       lblSummaryErrors);
-    ProductGridViewConfigurator.Configure(dgvProducts);
+    ThemeManager.ApplyDarkTitleBar(this);
+    ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
+    ThemeManager.StyleDarkButtons(this);
+    ThemeManager.ApplyDarkTheme(this);
+    ThemeManager.ApplyDarkTheme(dgvProducts);
+    ProductGridViewConfigurator.AttachStatusFormatting(dgvProducts);
     lblRoot.ForeColor = Color.WhiteSmoke;
     lblLastCheck.ForeColor = Color.WhiteSmoke;
     lblSummaryOk.ForeColor = Color.LightGreen;
@@ -57,16 +56,24 @@ public partial class MainForm: Form {
     lblSummaryWarnings.ForeColor = Color.Orange;
     lblSummaryErrors.ForeColor = Color.OrangeRed;
     ProductDetailsPresenter.Clear(
-    lblDetailProduct,
-    lblDetailType,
-    lblDetailVersion,
-    lblDetailStatus,
-    txtDetailDownloadUrl,
-    txtDetailArtifactUrl,
-    txtDetailSha256Url,
-    txtDetailUpdateJsonUrl);
+      lblDetailProduct,
+      lblDetailType,
+      lblDetailVersion,
+      lblDetailStatus,
+      txtDetailDownloadUrl,
+      txtDetailArtifactUrl,
+      txtDetailSha256Url,
+      txtDetailUpdateJsonUrl);
 
     LoadCatalog();
+  }
+
+  private void ApplyDashboardGridTheme() {
+    ProductGridViewConfigurator.ApplyLightGridTheme(dgvProducts);
+    ProductGridViewConfigurator.AttachStatusFormatting(dgvProducts);
+
+    _rows.ResetBindings();
+    dgvProducts.Refresh();
   }
 
   private SiteInfo GetSiteInfo() {
@@ -146,6 +153,8 @@ public partial class MainForm: Form {
                       _catalog.Site.SoftwaresUrl))
                   .ToList()
           );
+
+      ProductGridViewConfigurator.Configure(dgvProducts);
 
       dgvProducts.DataSource = _rows;
       UpdateProductDetails();

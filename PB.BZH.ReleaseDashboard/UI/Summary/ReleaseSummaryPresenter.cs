@@ -14,11 +14,6 @@ public static class ReleaseSummaryPresenter {
     lblSummaryInfo.Text = "Infos : -";
     lblSummaryWarnings.Text = "Warnings : -";
     lblSummaryErrors.Text = "Errors : -";
-
-    //lblSummaryOk.ForeColor = Color.LightGreen;
-    //lblSummaryInfo.ForeColor = Color.DeepSkyBlue;
-    //lblSummaryWarnings.ForeColor = Color.Orange;
-    //lblSummaryErrors.ForeColor = Color.OrangeRed;
   }
 
   public static void Apply(
@@ -45,13 +40,5 @@ public static class ReleaseSummaryPresenter {
 
     lblSummaryErrors.Text =
         "Errors : " + report.Summary.Errors;
-
-    //lblSummaryOk.ForeColor = Color.DarkGreen;
-    //lblSummaryInfo.ForeColor = Color.RoyalBlue;
-    //lblSummaryWarnings.ForeColor =
-    //    report.Summary.Warnings == 0 ? Color.DarkGreen : Color.DarkOrange;
-
-    //lblSummaryErrors.ForeColor =
-    //    report.Summary.Errors == 0 ? Color.DarkGreen : Color.DarkRed;
   }
 }

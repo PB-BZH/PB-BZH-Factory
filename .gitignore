@@ -5,7 +5,9 @@ reports/release-check_*.json
 # Keep reports folder
 !reports/.gitkeep
 
-*.vs
+.vs/
+bin/
+obj/
 
 # Generated product catalog files
 products/products.rebuilt.json
