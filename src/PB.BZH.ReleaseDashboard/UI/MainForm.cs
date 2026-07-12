@@ -21,9 +21,12 @@ public partial class MainForm: Form {
   private string _lastRebuiltProductsJsonPath = string.Empty;
   private readonly DashboardSettingsService _settingsService = new();
   private readonly WorkspaceService _workspaceService = new();
+  private readonly ReleaseCheckService _releaseCheckService = new();
+  private readonly ReleaseReportWriter _releaseReportWriter = new();
 
   private DashboardSettings _settings = new();
   private WorkspaceSettings _workspace = new();
+  private ReleaseCheckReport? _latestReport;
 
   private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
@@ -67,6 +70,29 @@ public partial class MainForm: Form {
     txtDetailUpdateJsonUrl);
 
     LoadCatalog();
+  }
+
+  private SiteInfo GetSiteInfo() {
+    if (_catalog != null &&
+        !string.IsNullOrWhiteSpace(_catalog.Site.SoftwaresUrl)) {
+      return _catalog.Site;
+    }
+
+    if (_settings.Site == null) {
+      _settings.Site =
+          new SiteInfo {
+            MainUrl = "https://www.pb-bzh-concept.fr",
+            SoftwaresUrl = "https://www.pb-bzh-concept.fr/softwares",
+            LocalSoftwaresRoot = string.Empty
+          };
+    }
+
+    return _settings.Site;
+  }
+
+  private void RefreshDashboardView() {
+    LoadLatestReportStatus();
+    UpdateProductDetails();
   }
 
   private void InitializeWorkspace() {
@@ -181,90 +207,37 @@ public partial class MainForm: Form {
   }
 
   private async Task RunReleaseCheckActionAsync() {
-    await RunScriptAsync(
-        "release\\check-release.ps1",
-        "-Report");
+    if (_catalog == null) {
+      AppendConsole("[ERROR] products catalog is not loaded.");
+      return;
+    }
 
-    LoadLatestReportStatus();
-  }
-
-  private async Task RunScriptAsync(
-       string relativeScriptPath,
-       string arguments) {
     try {
-      string scriptPath =
-          Path.Combine(_factoryRoot,relativeScriptPath);
-
-      if (!File.Exists(scriptPath)) {
-        throw new FileNotFoundException(
-            "Script not found.",
-            scriptPath);
-      }
-
-      AppendConsole("");
-      AppendConsole("==================================================");
-      AppendConsole("Running : " + scriptPath);
-      AppendConsole("==================================================");
-
       SetButtonsEnabled(false);
 
-      string psArguments =
-          "-NoLogo -NoProfile -NonInteractive " +
-          "-ExecutionPolicy Bypass " +
-          "-File \"" +
-          scriptPath +
-          "\"";
+      AppendConsole("");
+      AppendConsole("==================================================");
+      AppendConsole("Run native release check");
+      AppendConsole("==================================================");
 
-      if (!string.IsNullOrWhiteSpace(arguments)) {
-        psArguments += " " + arguments;
-      }
+      ReleaseCheckReport report =
+          await _releaseCheckService.RunAsync(
+              _catalog,
+              AppendConsole);
 
-      ProcessStartInfo psi = new() {
-        FileName = "pwsh",
-        Arguments = psArguments,
-        WorkingDirectory = _factoryRoot,
-        UseShellExecute = false,
-        RedirectStandardOutput = true,
-        RedirectStandardError = true,
-        CreateNoWindow = true,
-        StandardOutputEncoding = Encoding.UTF8,
-        StandardErrorEncoding = Encoding.UTF8
-      };
-
-      using Process process = new() {
-        StartInfo = psi,
-        EnableRaisingEvents = true
-      };
-
-      process.OutputDataReceived += (_,e) => {
-        if (!string.IsNullOrWhiteSpace(e.Data)) {
-          BeginInvoke(() => AppendConsole(e.Data));
-        }
-      };
-
-      process.ErrorDataReceived += (_,e) => {
-        if (!string.IsNullOrWhiteSpace(e.Data)) {
-          BeginInvoke(() => AppendConsole("[ERROR] " + e.Data));
-        }
-      };
-
-      process.Start();
-      process.BeginOutputReadLine();
-      process.BeginErrorReadLine();
-
-      await process.WaitForExitAsync();
+      (string markdownPath,string jsonPath) =
+          _releaseReportWriter.Save(
+              GetReportsFolderPath(),
+              report);
 
       AppendConsole("");
-      AppendConsole("Exit code : " + process.ExitCode);
+      AppendConsole("[OK] Markdown report generated : " + markdownPath);
+      AppendConsole("[OK] JSON report generated     : " + jsonPath);
+
+      RefreshDashboardView();
     }
     catch (Exception ex) {
-      AppendConsole("[ERROR] " + ex.Message);
-
-      MessageBox.Show(
-          ex.Message,
-          "PB BZH Release Dashboard",
-          MessageBoxButtons.OK,
-          MessageBoxIcon.Error);
+      AppendConsole("[ERROR] Native release check failed : " + ex.Message);
     }
     finally {
       SetButtonsEnabled(true);
@@ -272,78 +245,101 @@ public partial class MainForm: Form {
   }
 
   private void LoadLatestReportStatus() {
-    try {
-      if (_catalog == null || _rows.Count == 0)
-        return;
+    _latestReport =
+        _reportService.LoadLatestReport(
+            GetReportsFolderPath());
 
-      ReleaseCheckReport? report =
-          _reportService.LoadLatestReport(_factoryRoot);
-
-      if (report == null) {
-        foreach (ProductGridRow row in _rows) {
-          row.Status = "UNKNOWN";
-          row.LastCheck = string.Empty;
-        }
-
-        ReleaseSummaryPresenter.Clear(
-          lblLastCheck,
-          lblSummaryOk,
-          lblSummaryInfo,
-          lblSummaryWarnings,
-          lblSummaryErrors
-        );
-
-        dgvProducts.Refresh();
-        ApplyGridRowColors();
-        AppendConsole("[INFO] No release report found yet.");
-        return;
-      }
-
+    if (_latestReport == null) {
       foreach (ProductGridRow row in _rows) {
-        bool hasChecks =
-            _reportService.HasProductChecks(
-                report,
-                row.Id,
-                row.DisplayName);
-
-        if (!hasChecks) {
-          row.Status = "NOT CHECKED";
-          row.LastCheck = string.Empty;
-          continue;
-        }
-
-        row.Status =
-            _reportService.GetProductStatus(
-                report,
-                row.Id,
-                row.DisplayName);
-
-        row.LastCheck =
-            report.GeneratedAtLocal;
+        row.Status = "NOT CHECKED";
+        row.LastCheck = string.Empty;
       }
 
-      ReleaseSummaryPresenter.Apply(
-        report,
-        lblLastCheck,
-        lblSummaryOk,
-        lblSummaryInfo,
-        lblSummaryWarnings,
-        lblSummaryErrors
-      );
+      ClearSummaryLabels();
 
+      _rows.ResetBindings();
       dgvProducts.Refresh();
-      ApplyGridRowColors();
-      UpdateProductDetails();
 
-      AppendConsole("[OK] Latest release report loaded : " + report.GeneratedAtLocal);
+      return;
     }
-    catch (Exception ex) {
-      AppendConsole("[ERROR] Unable to load latest report : " + ex.Message);
+
+    ApplySummaryLabels(_latestReport);
+
+    foreach (ProductGridRow row in _rows) {
+      bool hasChecks =
+          _reportService.HasProductChecks(
+              _latestReport,
+              row.Id,
+              row.DisplayName);
+
+      if (!hasChecks) {
+        row.Status = "NOT CHECKED";
+        row.LastCheck = string.Empty;
+        continue;
+      }
+
+      row.Status =
+          _reportService.GetProductStatus(
+              _latestReport,
+              row.Id,
+              row.DisplayName);
+
+      row.LastCheck =
+          _latestReport.GeneratedAtLocal;
     }
+
+    _rows.ResetBindings();
+    dgvProducts.Refresh();
   }
 
   private void ApplyGridRowColors() {
     ProductGridViewConfigurator.ApplyStatusColors(dgvProducts);
+  }
+
+  private void ClearSummaryLabels() {
+    lblLastCheck.Text = "Last check : -";
+    lblSummaryOk.Text = "OK : 0";
+    lblSummaryInfo.Text = "Infos : 0";
+    lblSummaryWarnings.Text = "Warnings : 0";
+    lblSummaryErrors.Text = "Errors : 0";
+
+    lblSummaryOk.ForeColor = Color.LightGray;
+    lblSummaryInfo.ForeColor = Color.LightGray;
+    lblSummaryWarnings.ForeColor = Color.LightGray;
+    lblSummaryErrors.ForeColor = Color.LightGray;
+  }
+
+  private void ApplySummaryLabels(ReleaseCheckReport report) {
+    lblLastCheck.Text =
+        "Last check : " + report.GeneratedAtLocal;
+
+    lblSummaryOk.Text =
+        "OK : " + report.Summary.Ok;
+
+    lblSummaryInfo.Text =
+        "Infos : " + report.Summary.Info;
+
+    lblSummaryWarnings.Text =
+        "Warnings : " + report.Summary.Warnings;
+
+    lblSummaryErrors.Text =
+        "Errors : " + report.Summary.Errors;
+
+    lblSummaryOk.ForeColor =
+        Color.LightGreen;
+
+    lblSummaryInfo.ForeColor =
+        Color.LightSkyBlue;
+
+    lblSummaryWarnings.ForeColor =
+        report.Summary.Warnings == 0
+            ? Color.LightGreen
+            : Color.Orange;
+
+    lblSummaryErrors.ForeColor =
+        report.Summary.Errors == 0
+            ? Color.LightGreen
+            : Color.OrangeRed;
   }
 
   private void SetButtonsEnabled(bool enabled) {
@@ -688,11 +684,6 @@ public partial class MainForm: Form {
   }
 
   private async Task RebuildProductsJsonFromSiteAsync() {
-    if (_catalog == null) {
-      AppendConsole("[ERROR] products catalog is not loaded.");
-      return;
-    }
-
     try {
       SetButtonsEnabled(false);
 
@@ -701,9 +692,15 @@ public partial class MainForm: Form {
       AppendConsole("Rebuild products.json from website");
       AppendConsole("==================================================");
 
+      ProductCatalog sourceCatalog =
+          new() {
+            Site = GetSiteInfo(),
+            Products = []
+          };
+
       RemoteProductCatalogBuildResult result =
           await _remoteCatalogBuilder.BuildAsync(
-              _catalog,
+              sourceCatalog,
               "msi-software-packager");
 
       foreach (string message in result.Messages) {
@@ -885,8 +882,7 @@ public partial class MainForm: Form {
       AppendConsole("[OK] products.json replaced by : " + rebuiltFile);
 
       LoadCatalog();
-      LoadLatestReportStatus();
-      UpdateProductDetails();
+      RefreshDashboardView();
 
       AppendConsole("[OK] Catalog reloaded.");
     }
@@ -1046,7 +1042,7 @@ public partial class MainForm: Form {
   private void ReloadCatalogAction() {
     try {
       LoadCatalog();
-      UpdateProductDetails();
+      RefreshDashboardView();
 
       AppendConsole("[OK] products.json reloaded.");
     }
@@ -1096,8 +1092,7 @@ public partial class MainForm: Form {
       UpdateWorkspaceLabel();
 
       LoadCatalog();
-      LoadLatestReportStatus();
-      UpdateProductDetails();
+      RefreshDashboardView();
 
       AppendConsole("[OK] Workspace updated.");
       AppendConsole("[INFO] Products folder : " + _workspace.ProductsFolder);
