@@ -10,44 +10,26 @@ public sealed class ReleaseReportService {
     AllowTrailingCommas = true
   };
 
-  public string? GetLatestJsonReportPath(string factoryRoot) {
-    if (string.IsNullOrWhiteSpace(factoryRoot))
-      return null;
-
-    string reportsDirectory =
-        Path.Combine(factoryRoot,"reports");
-
-    if (!Directory.Exists(reportsDirectory))
-      return null;
-
-    FileInfo? latest =
-        new DirectoryInfo(reportsDirectory)
-            .GetFiles("release-check_*.json")
-            .OrderByDescending(file => file.LastWriteTime)
-            .FirstOrDefault();
-
-    return latest?.FullName;
+  public string? GetLatestJsonReportPath(string reportsFolder) {
+    return GetLatestReportPath(
+        reportsFolder,
+        "release-check_*.json");
   }
 
-  public List<ReleaseCheckRow> GetProductChecks(
-    ReleaseCheckReport report,
-    string productId,
-    string displayName) {
-    if (report == null)
-      throw new ArgumentNullException(nameof(report));
-
-    return report.Checks
-        .Where(row =>
-            string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
-            string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase))
-        .ToList();
+  public string? GetLatestMarkdownReportPath(string reportsFolder) {
+    return GetLatestReportPath(
+        reportsFolder,
+        "release-check_*.md");
   }
 
-  public ReleaseCheckReport? LoadLatestReport(string factoryRoot) {
+  public ReleaseCheckReport? LoadLatestReport(string reportsFolder) {
     string? reportPath =
-        GetLatestJsonReportPath(factoryRoot);
+        GetLatestJsonReportPath(reportsFolder);
 
     if (string.IsNullOrWhiteSpace(reportPath))
+      return null;
+
+    if (!File.Exists(reportPath))
       return null;
 
     string json =
@@ -56,15 +38,6 @@ public sealed class ReleaseReportService {
     return JsonSerializer.Deserialize<ReleaseCheckReport>(
         json,
         JsonOptions);
-  }
-
-  public bool HasProductChecks(
-    ReleaseCheckReport report,
-    string productId,
-    string displayName) {
-    return report.Checks.Any(row =>
-        string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
-        string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase));
   }
 
   public string GetProductStatus(
@@ -88,5 +61,46 @@ public sealed class ReleaseReportService {
       return "WARN";
 
     return "OK";
+  }
+
+  public bool HasProductChecks(
+      ReleaseCheckReport report,
+      string productId,
+      string displayName) {
+    return report.Checks.Any(row =>
+        string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
+        string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase));
+  }
+
+  public List<ReleaseCheckRow> GetProductChecks(
+      ReleaseCheckReport report,
+      string productId,
+      string displayName) {
+    if (report == null)
+      throw new ArgumentNullException(nameof(report));
+
+    return report.Checks
+        .Where(row =>
+            string.Equals(row.ProductId,productId,StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(row.Product,displayName,StringComparison.OrdinalIgnoreCase))
+        .ToList();
+  }
+
+  private static string? GetLatestReportPath(
+      string reportsFolder,
+      string searchPattern) {
+    if (string.IsNullOrWhiteSpace(reportsFolder))
+      return null;
+
+    if (!Directory.Exists(reportsFolder))
+      return null;
+
+    return Directory
+        .EnumerateFiles(
+            reportsFolder,
+            searchPattern,
+            SearchOption.TopDirectoryOnly)
+        .OrderByDescending(File.GetLastWriteTime)
+        .FirstOrDefault();
   }
 }

@@ -46,6 +46,8 @@ partial class MainForm {
     txtDetailUpdateJsonUrl = new RichTextBox();
     txtConsole = new RichTextBox();
     menuStrip1 = new MenuStrip();
+    mnuFile = new ToolStripMenuItem();
+    mnuConfigureWorkspace = new ToolStripMenuItem();
     mnuRelease = new ToolStripMenuItem();
     mnuRunReleaseCheck = new ToolStripMenuItem();
     mnuOpenLastReport = new ToolStripMenuItem();
@@ -489,12 +491,26 @@ partial class MainForm {
     // 
     // menuStrip1
     // 
-    menuStrip1.Items.AddRange(new ToolStripItem[] { mnuRelease,mnuProduct,mnuCatalog,mnuHelp });
+    menuStrip1.Items.AddRange(new ToolStripItem[] { mnuFile,mnuRelease,mnuProduct,mnuCatalog,mnuHelp });
     menuStrip1.Location = new Point(0,0);
     menuStrip1.Name = "menuStrip1";
     menuStrip1.Size = new Size(1213,24);
     menuStrip1.TabIndex = 1;
     menuStrip1.Text = "menuStrip1";
+    // 
+    // mnuFile
+    // 
+    mnuFile.DropDownItems.AddRange(new ToolStripItem[] { mnuConfigureWorkspace });
+    mnuFile.Name = "mnuFile";
+    mnuFile.Size = new Size(37,20);
+    mnuFile.Text = "File";
+    // 
+    // mnuConfigureWorkspace
+    // 
+    mnuConfigureWorkspace.Name = "mnuConfigureWorkspace";
+    mnuConfigureWorkspace.Size = new Size(186,22);
+    mnuConfigureWorkspace.Text = "Configure workspace";
+    mnuConfigureWorkspace.Click += mnuConfigureWorkspace_Click;
     // 
     // mnuRelease
     // 
@@ -506,21 +522,21 @@ partial class MainForm {
     // mnuRunReleaseCheck
     // 
     mnuRunReleaseCheck.Name = "mnuRunReleaseCheck";
-    mnuRunReleaseCheck.Size = new Size(180,22);
+    mnuRunReleaseCheck.Size = new Size(172,22);
     mnuRunReleaseCheck.Text = "Run release check";
     mnuRunReleaseCheck.Click += mnuRunReleaseCheck_Click;
     // 
     // mnuOpenLastReport
     // 
     mnuOpenLastReport.Name = "mnuOpenLastReport";
-    mnuOpenLastReport.Size = new Size(180,22);
+    mnuOpenLastReport.Size = new Size(172,22);
     mnuOpenLastReport.Text = "Open last report";
     mnuOpenLastReport.Click += mnuOpenLastReport_Click;
     // 
     // mnuOpenReportFolder
     // 
     mnuOpenReportFolder.Name = "mnuOpenReportFolder";
-    mnuOpenReportFolder.Size = new Size(180,22);
+    mnuOpenReportFolder.Size = new Size(172,22);
     mnuOpenReportFolder.Text = "Open report folder";
     mnuOpenReportFolder.Click += mnuOpenReportsFolder_Click;
     // 
@@ -722,4 +738,6 @@ partial class MainForm {
   private ToolStripMenuItem mnuHelp;
   private ToolStripMenuItem mnuAbout;
   private ToolStripMenuItem mnuCheckForUpdate;
+  private ToolStripMenuItem mnuFile;
+  private ToolStripMenuItem mnuConfigureWorkspace;
 }

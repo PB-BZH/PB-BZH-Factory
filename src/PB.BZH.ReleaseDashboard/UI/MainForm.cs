@@ -19,6 +19,11 @@ public partial class MainForm: Form {
   private readonly RemoteSha256Verifier _sha256Verifier = new();
   private readonly RemoteProductCatalogBuilder _remoteCatalogBuilder = new();
   private string _lastRebuiltProductsJsonPath = string.Empty;
+  private readonly DashboardSettingsService _settingsService = new();
+  private readonly WorkspaceService _workspaceService = new();
+
+  private DashboardSettings _settings = new();
+  private WorkspaceSettings _workspace = new();
 
   private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
@@ -26,6 +31,11 @@ public partial class MainForm: Form {
 
   public MainForm() {
     InitializeComponent();
+
+    _factoryRoot = TryFindFactoryRoot() ?? AppContext.BaseDirectory;
+
+    InitializeWorkspace();
+
     ConsoleContextMenuConfigurator.Configure(txtConsole);
     ThemeManager.ApplyDarkTitleBar(this);
     ThemeManager.ApplyDarkDialogBorder(this,tlpMain);
@@ -59,9 +69,47 @@ public partial class MainForm: Form {
     LoadCatalog();
   }
 
+  private void InitializeWorkspace() {
+    _settings =
+        _settingsService.Load();
+
+    _workspace =
+        _workspaceService.Resolve(_settings.Workspace);
+
+    _settings.Workspace =
+        _workspace;
+
+    _settingsService.Save(_settings);
+
+    UpdateWorkspaceLabel();
+  }
+
+  private string GetProductsFolderPath() {
+    return _workspace.ProductsFolder;
+  }
+
+  private string GetReportsFolderPath() {
+    return _workspace.ReportsFolder;
+  }
+
+  private string GetProductsJsonPath() {
+    return Path.Combine(
+        GetProductsFolderPath(),
+        "products.json");
+  }
+
+  private void UpdateWorkspaceLabel() {
+    if (lblRoot == null)
+      return;
+
+    lblRoot.Text =
+        "Products : " + _workspace.ProductsFolder +
+        "    Reports : " + _workspace.ReportsFolder;
+  }
+
   private void LoadCatalog() {
     try {
-      _factoryRoot = FindFactoryRoot();
+      _factoryRoot = TryFindFactoryRoot() ?? AppContext.BaseDirectory;
 
       string productsFile =
           Path.Combine(_factoryRoot,"products","products.json");
@@ -98,27 +146,30 @@ public partial class MainForm: Form {
     }
   }
 
-  private static string FindFactoryRoot() {
+  private static string? TryFindFactoryRoot() {
     DirectoryInfo? directory =
         new(AppContext.BaseDirectory);
 
     while (directory != null) {
       string productsFile =
-          Path.Combine(directory.FullName,"products","products.json");
+          Path.Combine(
+              directory.FullName,
+              "products",
+              "products.json");
 
       string releaseScript =
-          Path.Combine(directory.FullName,"release","check-release.ps1");
+          Path.Combine(
+              directory.FullName,
+              "release",
+              "check-release.ps1");
 
-      if (File.Exists(productsFile) && File.Exists(releaseScript)) {
+      if (File.Exists(productsFile) && File.Exists(releaseScript))
         return directory.FullName;
-      }
 
       directory = directory.Parent;
     }
 
-    throw new DirectoryNotFoundException(
-        "Unable to find PB-BZH-Factory root from: " +
-        AppContext.BaseDirectory);
+    return null;
   }
 
   private async void btnRunReleaseCheck_Click(object sender,EventArgs e) {
@@ -396,16 +447,16 @@ public partial class MainForm: Form {
     }
   }
 
-  private string GetProductsJsonPath() {
-    if (string.IsNullOrWhiteSpace(_factoryRoot)) {
-      throw new InvalidOperationException("Factory root is not defined.");
-    }
+  //private string GetProductsJsonPath() {
+  //  if (string.IsNullOrWhiteSpace(_factoryRoot)) {
+  //    throw new InvalidOperationException("Factory root is not defined.");
+  //  }
 
-    return Path.Combine(
-        _factoryRoot,
-        "products",
-        "products.json");
-  }
+  //  return Path.Combine(
+  //      _factoryRoot,
+  //      "products",
+  //      "products.json");
+  //}
 
   private static void OpenFileInEditor(string filePath) {
     if (string.IsNullOrWhiteSpace(filePath))
@@ -550,7 +601,7 @@ public partial class MainForm: Form {
 
     try {
       ReleaseCheckReport? report =
-          _reportService.LoadLatestReport(_factoryRoot);
+          _reportService.LoadLatestReport(GetReportsFolderPath());
 
       if (report == null) {
         AppendConsole("[WARN] No release report found.");
@@ -663,10 +714,7 @@ public partial class MainForm: Form {
         AppendConsole(error);
       }
 
-      string productsDirectory =
-          Path.Combine(
-              _factoryRoot,
-              "products");
+      string productsDirectory = GetProductsFolderPath();
 
       Directory.CreateDirectory(productsDirectory);
 
@@ -778,9 +826,7 @@ public partial class MainForm: Form {
   private void ApplyRebuiltProductsJson() {
     try {
       string productsDirectory =
-          Path.Combine(
-              _factoryRoot,
-              "products");
+          GetProductsFolderPath();
 
       string rebuiltFile =
           _lastRebuiltProductsJsonPath;
@@ -921,15 +967,27 @@ public partial class MainForm: Form {
     await VerifySelectedProductSha256Async(row);
   }
 
-  private async Task OpenLastReportActionAsync() {
-    await RunScriptAsync(
-        "release\\show-last-report.ps1",
-        string.Empty);
+  private void OpenLastReportAction() {
+    string reportsFolder =
+        GetReportsFolderPath();
+
+    string? latestReport =
+        _reportService.GetLatestMarkdownReportPath(reportsFolder);
+
+    if (string.IsNullOrWhiteSpace(latestReport)) {
+      AppendConsole("[INFO] No Markdown report found in : " + reportsFolder);
+      return;
+    }
+
+    Process.Start(new ProcessStartInfo {
+      FileName = latestReport,
+      UseShellExecute = true
+    });
   }
 
   private void OpenReportsFolderAction() {
     string reportsFolder =
-        Path.Combine(_factoryRoot,"reports");
+        GetReportsFolderPath();
 
     Directory.CreateDirectory(reportsFolder);
 
@@ -941,8 +999,7 @@ public partial class MainForm: Form {
 
   private void ViewProductsJsonAction() {
     try {
-      string productsFile =
-          GetProductsJsonPath();
+      string productsFile = GetProductsJsonPath();
 
       if (!File.Exists(productsFile)) {
         AppendConsole("[ERROR] products.json not found : " + productsFile);
@@ -972,8 +1029,7 @@ public partial class MainForm: Form {
 
   private void EditProductsJsonAction() {
     try {
-      string productsFile =
-          GetProductsJsonPath();
+      string productsFile = GetProductsJsonPath();
 
       if (!File.Exists(productsFile)) {
         AppendConsole("[ERROR] products.json not found : " + productsFile);
@@ -996,6 +1052,59 @@ public partial class MainForm: Form {
     }
     catch (Exception ex) {
       AppendConsole("[ERROR] Unable to reload products.json : " + ex.Message);
+    }
+  }
+
+  private void ConfigureWorkspaceAction() {
+    try {
+      using FolderBrowserDialog productsDialog = new() {
+        Description = "Select the folder containing products.json",
+        UseDescriptionForTitle = true,
+        SelectedPath = Directory.Exists(_workspace.ProductsFolder)
+            ? _workspace.ProductsFolder
+            : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+      };
+
+      if (productsDialog.ShowDialog(this) != DialogResult.OK)
+        return;
+
+      using FolderBrowserDialog reportsDialog = new() {
+        Description = "Select the reports output folder",
+        UseDescriptionForTitle = true,
+        SelectedPath = Directory.Exists(_workspace.ReportsFolder)
+            ? _workspace.ReportsFolder
+            : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+      };
+
+      if (reportsDialog.ShowDialog(this) != DialogResult.OK)
+        return;
+
+      WorkspaceSettings newWorkspace =
+          new() {
+            ProductsFolder = productsDialog.SelectedPath,
+            ReportsFolder = reportsDialog.SelectedPath
+          };
+
+      _workspace =
+          _workspaceService.Ensure(newWorkspace);
+
+      _settings.Workspace =
+          _workspace;
+
+      _settingsService.Save(_settings);
+
+      UpdateWorkspaceLabel();
+
+      LoadCatalog();
+      LoadLatestReportStatus();
+      UpdateProductDetails();
+
+      AppendConsole("[OK] Workspace updated.");
+      AppendConsole("[INFO] Products folder : " + _workspace.ProductsFolder);
+      AppendConsole("[INFO] Reports folder  : " + _workspace.ReportsFolder);
+    }
+    catch (Exception ex) {
+      AppendConsole("[ERROR] Unable to configure workspace : " + ex.Message);
     }
   }
 
@@ -1059,12 +1168,12 @@ public partial class MainForm: Form {
     ViewProductChecksAction();
   }
 
-  private async void btnOpenLastReport_Click(object sender,EventArgs e) {
-    await OpenLastReportActionAsync();
+  private void btnOpenLastReport_Click(object sender,EventArgs e) {
+    OpenLastReportAction();
   }
 
-  private async void mnuOpenLastReport_Click(object sender,EventArgs e) {
-    await OpenLastReportActionAsync();
+  private void mnuOpenLastReport_Click(object sender,EventArgs e) {
+    OpenLastReportAction();
   }
 
   private void btnOpenReportsFolder_Click(object sender,EventArgs e) {
@@ -1103,5 +1212,9 @@ public partial class MainForm: Form {
   }
   private void mnuApplyRebuiltProductsJson_Click(object sender,EventArgs e) {
     ApplyRebuiltProductsJsonAction();
+  }
+
+  private void mnuConfigureWorkspace_Click(object sender,EventArgs e) {
+    ConfigureWorkspaceAction();
   }
 }
