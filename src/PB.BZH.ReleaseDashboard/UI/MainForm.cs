@@ -28,14 +28,11 @@ public partial class MainForm: Form {
   private WorkspaceSettings _workspace = new();
   private ReleaseCheckReport? _latestReport;
 
-  private string _factoryRoot = string.Empty;
   private ProductCatalog? _catalog;
   private BindingList<ProductGridRow> _rows = [];
 
   public MainForm() {
     InitializeComponent();
-
-    _factoryRoot = TryFindFactoryRoot() ?? AppContext.BaseDirectory;
 
     InitializeWorkspace();
 
@@ -135,10 +132,8 @@ public partial class MainForm: Form {
 
   private void LoadCatalog() {
     try {
-      _factoryRoot = TryFindFactoryRoot() ?? AppContext.BaseDirectory;
-
       string productsFile =
-          Path.Combine(_factoryRoot,"products","products.json");
+          GetProductsJsonPath();
 
       _catalog =
           _catalogService.Load(productsFile);
@@ -155,7 +150,7 @@ public partial class MainForm: Form {
       dgvProducts.DataSource = _rows;
       UpdateProductDetails();
 
-      lblRoot.Text = "Root : " + _factoryRoot;
+      UpdateWorkspaceLabel();
 
       AppendConsole("[OK] products.json loaded.");
       AppendConsole(productsFile);
@@ -442,17 +437,6 @@ public partial class MainForm: Form {
       };
     }
   }
-
-  //private string GetProductsJsonPath() {
-  //  if (string.IsNullOrWhiteSpace(_factoryRoot)) {
-  //    throw new InvalidOperationException("Factory root is not defined.");
-  //  }
-
-  //  return Path.Combine(
-  //      _factoryRoot,
-  //      "products",
-  //      "products.json");
-  //}
 
   private static void OpenFileInEditor(string filePath) {
     if (string.IsNullOrWhiteSpace(filePath))
